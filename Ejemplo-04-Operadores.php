@@ -32,8 +32,19 @@
 
     $x = true;
     $y = "true";
-    echo "<br>" . (($x == $y)  ? 'true' : 'false');
-    echo "<br>" . (($x === $y)  ? 'true' : 'false');
+    echo "<br>" . (($x == $y)  ? 'true <br>' : 'false <br>');
+
+    echo "<br>" . (($x === $y)  ? 'true <br>' : 'false <br>');
+    echo "<br>";
+
+    if ($x === $y) {
+        echo "false <br>";
+    } else {
+        echo "true <br>";
+    }
+
+
+
     ?>
     
 </body>

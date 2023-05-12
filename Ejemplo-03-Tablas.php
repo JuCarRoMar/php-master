@@ -11,7 +11,8 @@
 <body>
     <!-- Ejemplo-03-Tablas -->
     <?php
-    /* Tablas unidimensionales MIXTAS */
+    /* 
+     // Tablas unidimensionales MIXTAS 
     $num[0] = "cero";
     $num[1] = "uno";
     print_r($num);
@@ -21,7 +22,7 @@
     echo "<br><br> Tabla modificada" . "<br>";
     print_r($num);
 
-    /* Tablas bidimensionales */
+    // Tablas bidimensionales 
     $ciudades_esp[] = ["Madrid", "Valencia", "Sevilla"];
     $ciudades_fra[] = ["Paris", "Nantes", "Lyon"];
 
@@ -36,7 +37,7 @@
     echo "<br><br> Imprimo Ciudades Francesas <br>";
     print_r($ciudades["fra"]);
 
-    /* Tabla Bidimensional Asociativa */
+    // Tabla Bidimensional Asociativa 
     $equipos_futbol = array(
         "ESP" => array("Betis", "Sevilla", "Valencia"),
         "ITA" => array("Milan", "Juventus", "Napoli")
@@ -49,8 +50,9 @@
 
     echo "<br><br> Imprimo Equipos Españoles <br>";
     print_r($equipos_futbol["ESP"]);
+    */
 
-    /* Tablas Bidimensionales Asociativas BBDD */
+    // Tablas Bidimensionales Asociativas BBDD 
     $alumnos = array(
         "Maria" => array(
             "edad" => 33,
@@ -61,8 +63,19 @@
             "edad" => 36,
             "lugarNac" => "Sevilla",
             "sexo" => false
+        ),
+        "Juan Carlos" => array(
+            "edad" => 21,
+            "lugarNac" => "Sevilla",
+            "sexo" => false
+        ),
+        "Ivan" => array(
+            "edad" => 46,
+            "lugarNac" => "Sevilla",
+            "sexo" => false
         )
     );
+    /* 
     echo "<br><br> Imrpimo Alumnos <br>";
     print_r($alumnos);
 
@@ -85,7 +98,9 @@
         "lugarNac" => "Murcia",
         "sexo" => false
     ];
+    
     print_r($alumnos["Raul"]);
+*/
 
     echo "<br><br> Ver datos Alumnos <br>";
     foreach ($alumnos as $nombre => $fila) {
