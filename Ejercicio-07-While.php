@@ -22,9 +22,9 @@
     $num = 12;
     $divisor = 1;
     while ($divisor <= $num) {
-    if ($num % $divisor == 0) {
-        echo "$divisor <br>";
-    }
+        if ($num % $divisor == 0) {
+            echo "$divisor <br>";
+        }
         $divisor++;
     }
 

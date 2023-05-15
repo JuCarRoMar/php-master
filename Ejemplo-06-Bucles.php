@@ -35,29 +35,29 @@
     echo "Ahora vamos a usar for. <br>";
     for ($num = 5; $num >= 1; $num--) {
         echo "-$num <br>";
-        }
-        echo "<br>";
+    }
+    echo "<br>";
 
-        // uso de continue y break (DESACONSEJADO)
-        echo "Usando for voy a pintar 1, 2, 4, 5. <br>";
+    // uso de continue y break (DESACONSEJADO)
+    echo "Usando for voy a pintar 1, 2, 4, 5. <br>";
     for ($num = 1; $num <= 5; $num++) {
         if ($num == 3) {
             continue;
         }
         echo "-$num <br>";
+    }
+    echo "<br>";
+
+    echo "Usando for voy a pintar 1, 2. <br>";
+    for ($num = 1; $num <= 5; $num++) {
+        if ($num == 3) {
+            break;
         }
-        echo "<br>";
+        echo "-$num <br>";
+    }
+    echo "<br>";
 
-        echo "Usando for voy a pintar 1, 2. <br>";
-        for ($num = 1; $num <= 5; $num++) {
-            if ($num == 3) {
-                break;
-            }
-            echo "-$num <br>";
-            }
-            echo "<br>";
-
-            echo "FIN";
+    echo "FIN";
 
     ?>
 

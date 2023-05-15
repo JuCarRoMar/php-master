@@ -4,7 +4,7 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ?>
-
+// Por hacer
 <!DOCTYPE html>
 <html lang="es">
 
@@ -34,6 +34,13 @@ ini_set('display_startup_errors', 1);
     /* Lógica de la página */
     if (isset($_REQUEST['enviar'])) {
         $nombre = $_POST['nombre'];
+
+        $mensaje = "";
+        if ($num2 % $num == 0) {
+            echo "-Los números son múltiplos. <br>";
+        } else if ($num2 % $num != 0) {
+            echo "-Los números no son múltiplos. <br>";
+        }
     }
     ?>
 

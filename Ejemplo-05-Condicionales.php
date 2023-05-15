@@ -49,7 +49,7 @@
         echo "-Eres menor de edad. <br>";
     }
 
-    
+
     $cursoElegido = 1;
 
     // Mayor rendimiento
