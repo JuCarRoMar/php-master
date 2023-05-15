@@ -18,13 +18,14 @@
 
     $operacion = 2;
     $num = 15;
+    $num2 = 7;
     switch ($operacion) {
         case 1:
-            echo "<br>" . ($num) + ($num);
+            echo "<br>" . ($num) + ($num2);
             break;
 
         case 2:
-            echo "<br>" . ($num) - ($num);
+            echo "<br>" . ($num) - ($num2);
             break;
     }
     echo "<br>";
@@ -33,11 +34,11 @@
     $num = 15;
     switch ($operacion) {
         case 1:
-            echo "<br>" . ($num) + ($num);
+            echo "<br>" . ($num) + ($num2);
             break;
 
         case 2:
-            echo "<br>" . ($num) - ($num);
+            echo "<br>" . ($num) - ($num2);
             break;
     }
     

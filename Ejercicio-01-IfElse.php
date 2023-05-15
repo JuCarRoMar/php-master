@@ -24,7 +24,7 @@
         echo "$num es negativo <br>";
     } else if ($num > 0) {
         echo "$num es positivo <br>";
-    } else {
+    } else if ($num == 0) {
         echo "$num es cero <br>";
     }
     echo "<br>";
@@ -34,7 +34,7 @@
         echo "$num es negativo <br>";
     } else if ($num > 0) {
         echo "$num es positivo <br>";
-    } else {
+    } else if ($num == 0) {
         echo "$num es cero <br>";
     }
     echo "<br>";
@@ -44,7 +44,7 @@
         echo "$num es negativo <br>";
     } else if ($num > 0) {
         echo "$num es positivo <br>";
-    } else {
+    } else if ($num == 0) {
         echo "$num es cero <br>";
     }
 
