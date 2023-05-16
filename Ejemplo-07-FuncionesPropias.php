@@ -17,10 +17,17 @@
     b) Con entrada y sin salida
     c) Sin entrada y con salida
     d) Con entrada y con salida
+
+    Tipos de 
+    - Num (int), (float)
+    - Sin salida (void)
+    - Booleanos (bool)
+    - Cadena de caracteres (string)
+    - Especiales (array), (object)
     */
 
     # Funcion suma Sin Entrada y Sin salida
-    function suma()
+    function suma() :void
     {
         $num1 = 10;
         $num2 = 20;
@@ -30,14 +37,14 @@
     }
 
     # Funcion resta Con entrada y Sin salida
-    function resta($num1, $num2)
+    function resta($num1, $num2) :void
     {
         $rdo = $num1 - $num2;
         echo "La resta es: $rdo <br>";
     }
 
     # Funcion producto Sin entrada con salida
-    function producto()
+    function producto() :string
     {
         $num1 = 4;
         $num2 = 6;
@@ -46,10 +53,15 @@
     }
 
     # Funcion division Con entrada y Con salida
-    function division($num1, $num2)
+    function division($num1, $num2) :string
     {
         $rdo = $num1 / $num2;
         return "La division es: $rdo <br>";
+    }
+
+    # Funcion Operaciones Sin Entrada y Con Salida
+    function operaciones() :array {
+        return ["Suma", "resta", "Producto", "Division"];
     }
     ?>
 
@@ -72,6 +84,13 @@
 
     // Funcion division
     echo division($n1, $n2);
+
+    // Usamos la funcion que devuelve un array
+    $operaciones = operaciones();
+    foreach ($operaciones as $valor) {
+        echo $valor . "<br>";
+        }
+
 
     ?>
 

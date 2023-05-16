@@ -101,12 +101,12 @@
             echo calificaciones();
             break;
 
-        case 4: // Hay que arreglarlo
+        case 4:
             $operacion = 2;
             $num = 15;
             $num2 = 7;
             $calculo = "";
-            calculadora($operacion, $num, $num2, $calculo);
+            echo calculadora($operacion, $num, $num2, $calculo);
             break;
 
         case 5:

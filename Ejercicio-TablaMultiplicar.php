@@ -22,7 +22,6 @@ ini_set('display_startup_errors', 1);
             margin-top: 10px;
             margin-left: 10px;
         }
-
         h1 {
             color: white;
         }
@@ -30,34 +29,11 @@ ini_set('display_startup_errors', 1);
 
 </head>
 
-<?php
-function verNum($num): string{
-    $mensaje = "";
-    if ($num > 0) {
-        $mensaje = "El número {$num} es positivo";
-    } else if ($num < 0) {
-        $mensaje = "El número {$num} es negativo";
-    } else if ($num == 0) {
-        $mensaje = "El número {$num} es cero";
-    }
-    return $mensaje;
-}
-?>
-
 <body class="bg-dark">
-    <!--
-         Ejercicio-01-Condicionales
-         Autor: Juan Carlos Romero Martos
-         Fecha: 2023-05-15
-         Enunciado: Pedir Nº y decir si es negativo, positivo o cero
-    -->
     <?php
     /* Lógica de la página */
-    // Script Principal
-    // isset --> existe
     if (isset($_REQUEST['enviar'])) {
-        $num = $_REQUEST['num'];
-        $mensaje = verNum($num);
+        $nombre = $_REQUEST['nombre'];
     }
     ?>
 
@@ -69,7 +45,7 @@ function verNum($num): string{
             <p class="col-9 alert alert-warning">
                 <?php
                 if (isset($_REQUEST['enviar'])) {
-                    echo $mensaje;
+                    echo $nombre;
                 }
                 ?>
             </p>
@@ -79,8 +55,8 @@ function verNum($num): string{
             <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>
             <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <label for="num" class="form-label">Dame un numero</label>
-                <input type="text" class="form-control" id="num" name="num" class="form-control">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" class="form-control">
                 <hr>
                 <input type="submit" value="enviar" name="enviar" class="btn btn-primary">
             </form>
