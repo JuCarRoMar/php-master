@@ -22,18 +22,31 @@ ini_set('display_startup_errors', 1);
             margin-top: 10px;
             margin-left: 10px;
         }
+
         h1 {
             color: white;
         }
     </style>
 
 </head>
+<?php
+/*Crear funciones*/
+// Tabla de multiplicar
+function multiplicar() {
+ $valor = "";
+
+ while ($a <= 10) {
+    # code...
+ }
+}
+?>
 
 <body class="bg-dark">
     <?php
     /* Lógica de la página */
+    // Llamar funciones
     if (isset($_REQUEST['enviar'])) {
-        $nombre = $_REQUEST['nombre'];
+        $nombre = $_POST['nombre'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
     }
     ?>
 
@@ -44,6 +57,7 @@ ini_set('display_startup_errors', 1);
             <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
             <p class="col-9 alert alert-warning">
                 <?php
+                /* Mostrar funciones */
                 if (isset($_REQUEST['enviar'])) {
                     echo $nombre;
                 }
