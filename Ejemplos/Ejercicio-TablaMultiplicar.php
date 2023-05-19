@@ -32,13 +32,13 @@ ini_set('display_startup_errors', 1);
 <?php
 /*Crear funciones*/
 // Tabla de multiplicar
-function multiplicar() {
+/* function multiplicar() {
  $valor = "";
 
  while ($a <= 10) {
     # code...
  }
-}
+} */
 ?>
 
 <body class="bg-dark">
