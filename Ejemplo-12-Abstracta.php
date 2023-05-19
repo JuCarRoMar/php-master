@@ -6,30 +6,56 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
-// Definicion de la clase
-class Camion
+// Definicion de la clase PADRE Abstracta
+abstract class Vehiculo
 {
-    // Atributos (poner acceso!)
+    public $marca = "";
     public $modelo = "";
     public $velocidad = 0;
+
+    // Constructor definido con parametros
+    public function __construct($marca, $modelo)
+    {
+        $this->marca = $marca;
+        $this->modelo = $modelo;
+    }
+
+    abstract public function __toString();
+}
+// Definicion de la clase hija
+class Camion extends Vehiculo
+{
+    // Atributos (poner acceso!)
     public $remolque = false;
 
     // Constructor
     // Constructor por defecto sin parametros \\ Constructor definido con parametros
-    public function __construct($modelo, $velocidad, $remolque)
+    public function __construct($marca, $modelo, $velocidad, $remolque)
     {
-        $this->modelo = $modelo;
+        parent::__construct($marca, $modelo);
         $this->velocidad = $velocidad;
         $this->remolque = $remolque;
     }
 
+    // Metodos adicionales
+    public function acelerar($valor)
+    {
+        $this->velocidad += $valor;
+    }
+    public function frenar($valor)
+    {
+        $this->velocidad -= $valor;
+    }
+
     // Método toString (pinta el objeto)
+    // Uso parte del metodo heredado del padre
     public function __toString()
     {
-        $mensaje = "Datos Camion <br>";
-        $mensaje .= "$this->modelo <br>";
-        $mensaje .= "Velocidad: $this->velocidad <br>";
-        $mensaje .= "Remolque: $this->remolque <br>";
+        $mensaje = "Datos Camion: <br>";
+        $mensaje .= "Marca: " . $this->marca . "<br>"
+            .  "Modelo: " . $this->modelo . "<br>" .
+            "Velocidad: " . $this->velocidad . "<br>"
+            . "Remolque: $this->remolque <br>";
         return $mensaje;
     }
 }
@@ -70,8 +96,11 @@ class Camion
     /* Hilo Principal */
     // Llamar funciones
     if (isset($_REQUEST['enviar'])) {
-       // $nombre = $_REQUEST['nombre'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
-       $miVolvo = new Camion ("Volvo FHElectric", 0, true);
+        $marca = $_REQUEST['marca'];
+        $modelo = $_REQUEST['modelo'];
+        $velocidad = $_REQUEST['velocidad'];
+
+        $miCamion = new Camion($marca, $modelo, $velocidad, true);
     }
     ?>
 
@@ -84,7 +113,7 @@ class Camion
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    echo $miVolvo;
+                    echo $miCamion;
                 }
                 ?>
             </p>
@@ -94,8 +123,12 @@ class Camion
             <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>
             <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" class="form-control">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" name="marca" class="form-control">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" name="modelo" class="form-control">
+                <label for="velocidad" class="form-label">Velocidad</label>
+                <input type="numb" class="form-control" id="velocidad" name="velocidad" class="form-control">
                 <hr>
                 <input type="submit" value="enviar" name="enviar" class="btn btn-primary">
             </form>
