@@ -104,7 +104,7 @@ class Camion extends Vehiculo
         $modelo = $_REQUEST['modelo'];
         $velocidad = $_REQUEST['velocidad'];
 
-        $miCamion = new Camion ($marca, $modelo, $velocidad, true);
+        $miCamion = new Camion($marca, $modelo, $velocidad, true);
     }
     ?>
 

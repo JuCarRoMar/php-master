@@ -1,11 +1,20 @@
 <?php
 // Gestionar errores
-
 use Camion as GlobalCamion;
 
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+?>
+
+<?php
+// Todos los métodos de una interfaz, son abstractos
+// Definimos una interfaz
+interface metodosCamion {
+    public function acelerar ($valor);
+    public function frenar ($valor);
+}
+
 ?>
 
 <?php
@@ -26,7 +35,7 @@ abstract class Vehiculo
     abstract public function __toString();
 }
 // Definicion de la clase hija
-class Camion extends Vehiculo
+class Camion extends Vehiculo implements metodosCamion
 {
     // Atributos (poner acceso!)
     public $remolque = false;
@@ -48,7 +57,7 @@ class Camion extends Vehiculo
     {
         $this->velocidad -= $valor;
     }
-
+    
     // Método toString (pinta el objeto)
     // Uso parte del metodo heredado del padre
     public function __toString()
@@ -64,27 +73,6 @@ class Camion extends Vehiculo
     final public function cambiarRemolque()
     {
         $this->remolque = !$this->remolque;
-    }
-}
-
-class CamionElectrico extends Camion
-{
-    // Atributos
-    public $bateria;
-
-    // Constructor
-    public function __construct($marca, $modelo, $velocidad, $remolque, $bateria)
-    {
-        parent::__construct($marca, $modelo, $velocidad, $remolque);
-        $this->bateria = $bateria;
-    }
-
-    // Método toString
-    public function __toString()
-    {
-        $mensaje = parent::__toString();
-        $mensaje .= "Bateria: " . $this->bateria . "<br>";
-        return $mensaje;
     }
 }
 
@@ -128,9 +116,9 @@ class CamionElectrico extends Camion
         $modelo = $_REQUEST['modelo'];
         $velocidad = $_REQUEST['velocidad'];
 
-        $miCamionElectrico = new CamionElectrico($marca, $modelo, $velocidad, true, "100kw");
-        $miCamionElectrico->cambiarRemolque(); // true -> false
-        $miCamionElectrico->acelerar(20);
+        $miCamion = new Camion($marca, $modelo, $velocidad, true, "100kw");
+        $miCamion->cambiarRemolque(); // true -> false
+        $miCamion->acelerar(20);
     }
     ?>
 
@@ -143,7 +131,7 @@ class CamionElectrico extends Camion
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    echo $miCamionElectrico;
+                    echo $miCamion;
                 }
                 ?>
             </p>

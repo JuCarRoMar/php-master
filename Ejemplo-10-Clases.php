@@ -6,28 +6,31 @@ ini_set("display_startup_errors", 1);
 
 ?>
 <?php
-    //Definicion de la clase
-    class Camion {
-        //Atributos
-        public $modelo = "";
-        public $velocidad = 0;
-        public $remolque = false;
+//Definicion de la clase
+class Camion
+{
+    //Atributos
+    public $modelo = "";
+    public $velocidad = 0;
+    public $remolque = false;
 
-        //Constructor definido con parámetros
-        public function __construct($modelo, $velocidad, $remolque) {
-            $this->modelo = $modelo;
-            $this->velocidad = $velocidad;
-            $this->remolque = $remolque;
-            }
-        //Método toString (pinta el objeto)
-        public function __toString() {
-            $mensaje = "Datos Camion <br>"
+    //Constructor definido con parámetros
+    public function __construct($modelo, $velocidad, $remolque)
+    {
+        $this->modelo = $modelo;
+        $this->velocidad = $velocidad;
+        $this->remolque = $remolque;
+    }
+    //Método toString (pinta el objeto)
+    public function __toString()
+    {
+        $mensaje = "Datos Camion <br>"
             . "Modelo: " . $this->modelo . "<br>"
             . "Velocidad: " . $this->velocidad . "<br>"
             . "Remolque: " . $this->remolque . "<br>";
-            return $mensaje;
-        }
+        return $mensaje;
     }
+}
 
 ?>
 
@@ -42,9 +45,10 @@ ini_set("display_startup_errors", 1);
     <link rel="stylesheet" href="bootstrap.min.css">
     <script src="bootstrap.bundle.min.js"></script>
     <style>
-        h1{
+        h1 {
             padding: 10px;
         }
+
         h1,
         h2,
         p {
@@ -55,14 +59,12 @@ ini_set("display_startup_errors", 1);
 
 <body class="bg-dark">
 
-        /*Hilo principal*/
+    /*Hilo principal*/
 
     <?php
     if (isset($_REQUEST['enviar'])) {
         //$nombre = $_REQUEST['nombre'];
         $miVolvo = new Camion("Volovo FHElectric", 0, true);
-        
-        
     }
     ?>
 
