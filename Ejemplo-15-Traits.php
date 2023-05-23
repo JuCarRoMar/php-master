@@ -8,6 +8,23 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
+// Trait es como una interfax pero con los metodos definidos
+trait rasgosVehiculo {
+    public function arrancar () {
+        return "Arrancando vehiculo <br>";
+    }
+    public function detener () {
+        return "Deteniendo vehiculo <br>";
+        }
+}
+
+trait rasgosCamion {
+    public function cargarCamion () {
+        return "Cargando camion <br>";
+}
+}
+
+
 // Todos los métodos de una interfaz, son abstractos
 // Definimos una interfaz
 interface metodosCamion {
@@ -39,6 +56,10 @@ class Camion extends Vehiculo implements metodosCamion
 {
     // Atributos (poner acceso!)
     public $remolque = false;
+
+    // Uso los traits
+    use rasgosVehiculo;
+    use rasgosCamion;
 
     // Constructor por defecto sin parametros \\ Constructor definido con parametros
     public function __construct($marca, $modelo, $velocidad, $remolque)
@@ -132,6 +153,9 @@ class Camion extends Vehiculo implements metodosCamion
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
                     echo $miCamion;
+                    echo $miCamion->arrancar();
+                    echo $miCamion->detener();
+                    echo $miCamion->cargarCamion();
                 }
                 ?>
             </p>

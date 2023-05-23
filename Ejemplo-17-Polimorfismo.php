@@ -1,6 +1,7 @@
 <?php
 // Gestionar errores
 use Camion as GlobalCamion;
+use Vehiculo as GlobalVehiculo;
 
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
@@ -8,11 +9,31 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
+// Trait es como una interfax pero con los metodos definidos
+trait rasgosVehiculo {
+    public function arrancar () {
+        return "Arrancando vehiculo <br>";
+    }
+    public function detener () {
+        return "Deteniendo vehiculo <br>";
+        }
+}
+
+trait rasgosCamion {
+    public function cargarCamion () {
+        return "Cargando camion <br>";
+}
+}
+
 // Todos los métodos de una interfaz, son abstractos
 // Definimos una interfaz
 interface metodosCamion {
     public function acelerar ($valor);
     public function frenar ($valor);
+}
+
+interface metodoEspecial {
+    public function cambiarRemolque ();
 }
 
 ?>
@@ -38,7 +59,11 @@ abstract class Vehiculo
 class Camion extends Vehiculo implements metodosCamion
 {
     // Atributos (poner acceso!)
-    public $remolque = false;
+    private $remolque = false;
+
+    // Uso los traits
+    use rasgosVehiculo;
+    use rasgosCamion;
 
     // Constructor por defecto sin parametros \\ Constructor definido con parametros
     public function __construct($marca, $modelo, $velocidad, $remolque)
@@ -47,6 +72,14 @@ class Camion extends Vehiculo implements metodosCamion
         $this->velocidad = $velocidad;
         $this->remolque = $remolque;
     }
+
+    // Set y Get
+    public function setRemolque($valor) {
+        $this->remolque = $valor;
+    }
+    public function getRemolque() {
+        return $this->remolque;
+        }
 
     // Metodos adicionales
     final public function acelerar($valor)
@@ -65,8 +98,7 @@ class Camion extends Vehiculo implements metodosCamion
         $mensaje = "Datos Camion: <br>";
         $mensaje .= "Marca: " . $this->marca . "<br>"
             .  "Modelo: " . $this->modelo . "<br>" .
-            "Velocidad: " . $this->velocidad . "<br>"
-            . "Remolque: $this->remolque <br>";
+            "Velocidad: " . $this->velocidad . "<br>";
         return $mensaje;
     }
 
@@ -74,6 +106,35 @@ class Camion extends Vehiculo implements metodosCamion
     {
         $this->remolque = !$this->remolque;
     }
+}
+
+class Coche extends Vehiculo implements metodoEspecial {
+    // Atributos
+    public $numPuertas = 0;
+
+    // Constructor
+    public function __construct($marca, $modelo, $velocidad, $numPuertas) {
+        parent::__construct($marca, $modelo);
+        $this->velocidad = $velocidad;
+        $this->numPuertas = $numPuertas;
+
+    }
+
+    // Método toString (pinta el objeto)
+    public function __toString()
+    {
+        $mensaje = "Datos Coche: <br>";
+        $mensaje .= "Marca: " . $this->marca . "<br>"
+        .  "Modelo: " . $this->modelo . "<br>" .
+        "Velocidad: " . $this->velocidad . "<br>" .
+        "Num. Puertas: " . $this->numPuertas . "<br>";
+        return $mensaje;
+        }
+
+        final public function cambiarRemolque()
+        {
+            return "Le pongo remolque al coche";
+        }
 }
 
 ?>
@@ -117,8 +178,11 @@ class Camion extends Vehiculo implements metodosCamion
         $velocidad = $_REQUEST['velocidad'];
 
         $miCamion = new Camion($marca, $modelo, $velocidad, true);
-        $miCamion->cambiarRemolque(); // true -> false
+        $miCamion->cambiarRemolque();
+        //$miCamion->setRemolque(true);
         $miCamion->acelerar(20);
+
+        $miCoche = new Coche($marca, $modelo, $velocidad, 4);
     }
     ?>
 
@@ -132,6 +196,13 @@ class Camion extends Vehiculo implements metodosCamion
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
                     echo $miCamion;
+                    echo $miCamion->arrancar();
+                    echo $miCamion->detener();
+                    echo $miCamion->cargarCamion();
+                    echo $miCamion->getRemolque();
+
+                    echo $miCoche;
+                    echo $miCoche->cambiarRemolque();
                 }
                 ?>
             </p>

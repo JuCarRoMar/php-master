@@ -8,6 +8,23 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
+// Trait es como una interfax pero con los metodos definidos
+trait rasgosVehiculo {
+    public function arrancar () {
+        return "Arrancando vehiculo <br>";
+    }
+    public function detener () {
+        return "Deteniendo vehiculo <br>";
+        }
+}
+
+trait rasgosCamion {
+    public function cargarCamion () {
+        return "Cargando camion <br>";
+}
+}
+
+
 // Todos los métodos de una interfaz, son abstractos
 // Definimos una interfaz
 interface metodosCamion {
@@ -38,7 +55,11 @@ abstract class Vehiculo
 class Camion extends Vehiculo implements metodosCamion
 {
     // Atributos (poner acceso!)
-    public $remolque = false;
+    private $remolque = false;
+
+    // Uso los traits
+    use rasgosVehiculo;
+    use rasgosCamion;
 
     // Constructor por defecto sin parametros \\ Constructor definido con parametros
     public function __construct($marca, $modelo, $velocidad, $remolque)
@@ -47,6 +68,14 @@ class Camion extends Vehiculo implements metodosCamion
         $this->velocidad = $velocidad;
         $this->remolque = $remolque;
     }
+
+    // Set y Get
+    public function setRemolque($valor) {
+        $this->remolque = $valor;
+    }
+    public function getRemolque() {
+        return $this->remolque;
+        }
 
     // Metodos adicionales
     final public function acelerar($valor)
@@ -65,8 +94,7 @@ class Camion extends Vehiculo implements metodosCamion
         $mensaje = "Datos Camion: <br>";
         $mensaje .= "Marca: " . $this->marca . "<br>"
             .  "Modelo: " . $this->modelo . "<br>" .
-            "Velocidad: " . $this->velocidad . "<br>"
-            . "Remolque: $this->remolque <br>";
+            "Velocidad: " . $this->velocidad . "<br>";
         return $mensaje;
     }
 
@@ -117,7 +145,7 @@ class Camion extends Vehiculo implements metodosCamion
         $velocidad = $_REQUEST['velocidad'];
 
         $miCamion = new Camion($marca, $modelo, $velocidad, true);
-        $miCamion->cambiarRemolque(); // true -> false
+        $miCamion->setRemolque(true);
         $miCamion->acelerar(20);
     }
     ?>
@@ -132,6 +160,10 @@ class Camion extends Vehiculo implements metodosCamion
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
                     echo $miCamion;
+                    echo $miCamion->arrancar();
+                    echo $miCamion->detener();
+                    echo $miCamion->cargarCamion();
+                    echo $miCamion->getRemolque();
                 }
                 ?>
             </p>
