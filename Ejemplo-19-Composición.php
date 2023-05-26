@@ -8,10 +8,8 @@ ini_set('display_errors', 1);
 ini_set("display_startup_errors", 1);
 
 /**
- * POLIMORFISMO
- * - https://phpbasico.com/polimorfismo-en-php-polimorfismo-en-php-explicado-claramente-con-ejemplos/
- * - Poniendo private
- * - Protected es accesible a clases heredadas (hija, nietas,...)
+ * Composicion
+ * 
  */
 ?>
 <?php
@@ -32,7 +30,7 @@ trait rasgosCamion
 {
     public function cargarCamion()
     {
-        return "Cargando el Camion!<br>";
+        return "Cargando el Camion: ";
     }
 }
 
@@ -47,6 +45,28 @@ interface metodosCamion
 interface metodoEspecial
 {
     public function cambiarRemolque();
+}
+
+// Clase para la commposicion
+class Motor
+{
+    // Atributos
+    public $cilindrada = 0;
+    public $diesel = true;
+    // Constructor
+    public function __construct($cilindrada, $diesel)
+    {
+        $this->cilindrada = $cilindrada;
+        $this->diesel = $diesel;
+    }
+
+    // toString
+    public function __toString()
+    {
+        $mensaje = "Datos motor: <br>"
+            . "Cilindrada: " . $this->cilindrada . " <br> Diesel: " . $this->diesel;
+        return $mensaje;
+    }
 }
 
 //Definicion de la clase PADRE Abstracta
@@ -72,17 +92,18 @@ class Camion extends Vehiculo implements metodosCamion, metodoEspecial
 {
     //Atributos ($this->)
     private $remolque = false;
-
+    public $miMotor = null;
     // Uso un trait
     use rasgosVehiculo;
     use rasgosCamion;
 
     //Constructor definido con parámetros
-    public function __construct($marca, $modelo, $velocidad, $remolque)
+    public function __construct($marca, $modelo, $velocidad, $remolque, $cilindrada)
     {
         parent::__construct($marca, $modelo);
         $this->velocidad = $velocidad;
         $this->remolque = $remolque;
+        $this->miMotor = new Motor($cilindrada, true);
     }
 
     // Setter y Getter
@@ -120,7 +141,8 @@ class Camion extends Vehiculo implements metodosCamion, metodoEspecial
         $mensaje = "<br>Datos Camion: <br>";
         $mensaje .=  "Marca: " . $this->marca . "<br>"
             . "Modelo: " . $this->modelo . "<br>"
-            . "Velocidad: " . $this->velocidad . "<br>";
+            . "Velocidad: " . $this->velocidad . "<br>"
+            . "Motor: " . $this->miMotor . "<br>";
         return $mensaje;
     }
 }
@@ -129,13 +151,15 @@ class Coche extends Vehiculo implements metodoEspecial
 {
     // Atributos
     public $numPuertas = 0;
+    public $numCilindrada = 0;
 
     // Constructor
-    public function __construct($marca, $modelo, $velocidad, $numPuertas)
+    public function __construct($marca, $modelo, $velocidad, $numPuertas, $cilindrada)
     {
         parent::__construct($marca, $modelo);
         $this->velocidad = $velocidad;
         $this->numPuertas = $numPuertas;
+        $this->numCilindrada = new Motor($cilindrada, false);
     }
 
     final public function cambiarRemolque()
@@ -149,14 +173,15 @@ class Coche extends Vehiculo implements metodoEspecial
         $mensaje .=  "Marca: " . $this->marca . "<br>"
             . "Modelo: " . $this->modelo . "<br>"
             . "Velocidad: " . $this->velocidad . "<br>"
-            . "Nº Puertas: " . $this->numPuertas . "<br>";
+            . "Nº Puertas: " . $this->numPuertas . "<br>"
+            . "Motor: " . $this->numCilindrada . "<br>";
         return $mensaje;
     }
 
     // Método estático
     static public function crearCocheBase(): object
     {
-        $unCoche = new Coche("Ford", "Fiesta", 200, 4);
+        $unCoche = new Coche("Ford", "Fiesta", 200, 4, 100);
         return $unCoche;
     }
 }
@@ -195,12 +220,13 @@ class Coche extends Vehiculo implements metodoEspecial
         $marca = $_REQUEST['marca'];
         $modelo = $_REQUEST['modelo'];
         $velocidad = $_REQUEST['velocidad'];
+        $cilindrada = $_REQUEST['cilindrada'];
 
-        $miCamion = new Camion($marca, $modelo, $velocidad, false);
+        $miCamion = new Camion($marca, $modelo, $velocidad, false, 100, $cilindrada);
         $miCamion->cambiarRemolque();   // true -> false
         //$miCamion->setRemolque(true);
         $miCamion->acelerar(20);
-        $miCoche = new Coche($marca, $modelo, $velocidad, 4);
+        $miCoche = new Coche($marca, $modelo, $velocidad, 4, $numCilindrada);
     }
     ?>
     <!-- plantilla.php con Bootstrap 5.3 -->
@@ -219,7 +245,7 @@ class Coche extends Vehiculo implements metodoEspecial
                     echo $miCoche;
                     echo $miCoche->cambiarRemolque();
 
-                    echo Coche::crearCocheBase();       
+                    echo Coche::crearCocheBase();
                 }
                 ?>
             </p>
@@ -229,12 +255,14 @@ class Coche extends Vehiculo implements metodoEspecial
             <h2 class="col-6 bg-info rounded-pill">Formulario</h2>
             <hr>
             <form class="col-9 bg-warning p-3 rounded" method="post" action="#">
-                <label for="marca" class="form-label">marca</label>
+                <label for="marca" class="form-label">Marca</label>
                 <input type="text" class="form-control bg-light" id="marca" name="marca">
-                <label for="modelo" class="form-label">modelo</label>
+                <label for="modelo" class="form-label">Modelo</label>
                 <input type="text" class="form-control bg-light" id="modelo" name="modelo">
-                <label for="velocidad" class="form-label">velocidad</label>
+                <label for="velocidad" class="form-label">Velocidad</label>
                 <input type="number" class="form-control bg-light" id="velocidad" name="velocidad">
+                <label for="cilindrada" class="form-label">Cilindrada</label>
+                <input type="number" class="form-control bg-light" id="cilindrada" name="cilindrada">
                 <hr>
                 <input type="submit" value="Enviar Formulario" name="enviar" class="btn btn-primary">
 
@@ -243,7 +271,7 @@ class Coche extends Vehiculo implements metodoEspecial
         </section>
         <br><br>
         <nav>
-            <p><a href="#" class="btn btn-success mt-4"></a></p>
+            <p><a href="#" class="btn btn-success mt-4">Ir a la página</a></p>
         </nav>
     </main>
 
