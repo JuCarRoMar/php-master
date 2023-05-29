@@ -32,7 +32,7 @@ trait rasgosCamion
 {
     public function cargarCamion()
     {
-        return "Cargando el Camion!<br>";
+        return "Cargando el Camion: ";
     }
 }
 
@@ -140,7 +140,7 @@ class Coche extends Vehiculo implements metodoEspecial
 
     final public function cambiarRemolque()
     {
-        return "Al coche le pongo un remolque!";
+        return "Al coche le pongo un remolque: ";
     }
 
     public function __toString()
