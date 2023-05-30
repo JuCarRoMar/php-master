@@ -3,56 +3,71 @@
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-?>
 
-<?php
-/*
-        Ejercicio: Ex1306-menu.php
-         Autor: Juan Carlos Romero Martos
-         Fecha: 2023-05-26 
-         
-         1. Entrada (form): n (num)
-         2. Controlar que n>1000 y n<1000
-         3. Si no, "Num incorrecto"
-         4. Correcto: Usar mgd(num) -> return valor
-
-         Van en la funcion:
-         5. Obtener divisores del número
-            Ej: 6 -> 1, 2, 3, 6 (4 divisores)
-        6. Multiplicar los divisores
-            Ej: 1x2x3x6 = 36
-        7. Dividirlo entre el número de divisores
-            Ej: 36/4 divisores = 9 <- La media geométrica de los divisores
-        8. Devolver mgd y presentarlo en la alerta
-            OJO no confundir Media Geometrica de Divisores con media Aritmetica de divisores
-            Ej anterior: 1+2+3+6 = 12 / 4 divisores = 3
+/**
+ * Nombre: Ex1306-Camion.php
+ * Autor: Juan Carlos Romero Martos
+ * Fecha: 2023-05-30/16:46
+ * Info: Herencia
+ * 
+ * ANÁLISIS
+ * ---------------------------
+ * 1. Pedir entero entre >=10 y <=20
+ * 2. verPrimos($num): array
+ * 3. esPrimo($num): bool -> 1(primo), 0(no primo)
+ * 4. verPrimos($num) devolver $num primos en Array
+ * 5. Recorrer el array al revés y lo pinto bonito 
+ * -> pintaPrimos($array)
  */
-
 ?>
 
 <?php
-// Zona de funciones
-function mgd($num): float
+// funcion verPrimos
+function verPrimos($num)
 {
-    $producto = 1;
-    $numDivisores = 0;
-    for ($i=1; $i <= $num ; $i++) { 
-        $resto = $num % $i;
-        if ($resto == 0) {
-            //echo $i . "<br>";
-            // $producto += $i;  Aritmetica
-            $producto *= $i;
-            $numDivisores++;
-            
+    /*
+    $primos[] = 5;
+    $primos[] = 15;
+    */
+    $primos = [];
+    $contador = 0;
+    $valor = 1;
+    while ($contador < $num) {
+        if (esPrimo($valor)) {
+            $primos[] = $valor;
+            $contador++;
+        }
+        $valor++;
+    }
+    return $primos;
+}
+// funcion esPrimo
+function esPrimo($num)
+{
+    $divisores = 0;
+    for ($i = 1; $i <= $num; $i++) {
+        if ($num % $i == 0) {
+            $divisores++;
         }
     }
-    return $producto / $numDivisores;
+    if ($divisores <= 2) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-
+// Funcion pintarPrimos
+function pintaPrimos($array): string
+{
+    $mensaje = "";
+    for ($i= count($array) -1; $i >= 0; $i--) { 
+    $mensaje .= $array[$i] . "<br>";
+    }
+    return $mensaje;
+}
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -87,7 +102,7 @@ function mgd($num): float
     /* Lógica de la página */
     // Llamar funciones
     if (isset($_REQUEST['enviar'])) {
-        $num = $_REQUEST['num'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
+        $num = $_POST['num'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
     }
     ?>
 
@@ -100,35 +115,42 @@ function mgd($num): float
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    if ($num<1000 || $num>10000) {
+                    if ($num < 10 || $num > 20) {
                         echo "El número es incorrecto";
                     } else {
-                        echo "Media Geométrica divisores: " . mgd($num);
+                        //echo $num;
+                        //var_dump(verPrimos($num));
+                        echo pintaPrimos(verPrimos($num));
+
+                        /*
+                        if (esPrimo($num)) {
+                            echo " es primo";
+                        } else {
+                            echo " no es primo";
+                        }
+                        */
                     }
                 }
                 ?>
             </p>
         </section>
+
         <section class="row">
             <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>
             <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <label for="num" class="form-label">Número</label>
+                <label for="num" class="form-label">Nº 10-20</label>
                 <input type="number" class="form-control" id="num" name="num" class="form-control">
                 <hr>
                 <input type="submit" value="enviar" name="enviar" class="btn btn-primary">
             </form>
         </section>
         <hr>
-        
+
         <nav>
-            <p><a href="Ex1306-media-gdiv.php" class="btn btn-success">Ir a MediaGDivisores</a></p>
-            <p><a href="Ex1306-camion.php" class="btn btn-success">Ir a Camión</a></p>
-            <p><a href="Ex1306-mis-primos.php" class="btn btn-success">Ir a MisPrimos</a></p>
-            <p><a href="Ex1306-tussam.php" class="btn btn-success">Ir a Tussam</a></p>
+            <p><a href="#" class="btn btn-success">Ir a página</a></p>
 
         </nav>
-
 
     </main>
 
