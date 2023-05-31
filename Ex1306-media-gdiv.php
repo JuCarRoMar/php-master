@@ -36,14 +36,13 @@ function mgd($num): float
 {
     $producto = 1;
     $numDivisores = 0;
-    for ($i=1; $i <= $num ; $i++) { 
+    for ($i = 1; $i <= $num; $i++) {
         $resto = $num % $i;
         if ($resto == 0) {
             //echo $i . "<br>";
             // $producto += $i;  Aritmetica
             $producto *= $i;
             $numDivisores++;
-            
         }
     }
     return $producto / $numDivisores;
@@ -100,7 +99,7 @@ function mgd($num): float
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    if ($num<1000 || $num>10000) {
+                    if ($num < 1000 || $num > 10000) {
                         echo "El número es incorrecto";
                     } else {
                         echo "Media Geométrica divisores: " . mgd($num);
@@ -120,7 +119,7 @@ function mgd($num): float
             </form>
         </section>
         <hr>
-        
+
         <nav>
             <p><a href="Ex1306-media-gdiv.php" class="btn btn-success">Ir a MediaGDivisores</a></p>
             <p><a href="Ex1306-camion.php" class="btn btn-success">Ir a Camión</a></p>

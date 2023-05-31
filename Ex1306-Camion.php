@@ -83,10 +83,12 @@ class Camion extends Vehiculo
     }
 
     // Metodos
-    public function acelerar($vel) {
+    public function acelerar($vel)
+    {
         $this->vel += $vel;
     }
-    public function frenar($vel) {
+    public function frenar($vel)
+    {
         $this->vel -= $vel;
     }
 }
@@ -122,13 +124,13 @@ class Camion extends Vehiculo
 
 <body class="bg-dark">
     <!-- plantilla.php Con Bootstrap 5.3 -->
-    <h1 class ="bg-info rounded-pill" >Camion</h1>
+    <h1 class="bg-info rounded-pill">Camion</h1>
     <main class="container">
         <section class="row">
             <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
             <p class="col-9 alert alert-warning">
                 <?php
-                $miCamion = new Camion (true);
+                $miCamion = new Camion(true);
                 echo $miCamion;
                 $miCamion->acelerar(20);
                 $miCamion->frenar(10);

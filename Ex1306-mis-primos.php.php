@@ -61,8 +61,8 @@ function esPrimo($num)
 function pintaPrimos($array): string
 {
     $mensaje = "";
-    for ($i= count($array) -1; $i >= 0; $i--) { 
-    $mensaje .= $array[$i] . "<br>";
+    for ($i = count($array) - 1; $i >= 0; $i--) {
+        $mensaje .= $array[$i] . "<br>";
     }
     return $mensaje;
 }
