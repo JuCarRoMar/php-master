@@ -80,8 +80,8 @@ class Linea
 class Vehiculo
 {
     // Variables
-    private $matricula = "";
-    protected $antiguedad = 0;
+    private $matricula = "1111";
+    protected $antiguedad = 2020;
     protected $electrico = false;
 
     // Constructor
@@ -132,6 +132,12 @@ class Bus extends Vehiculo
     public function __construct($modelo) {
         $this->modelo = $modelo;
     }
+
+    // toString
+    public function __toString()
+    {
+        
+    } 
 }
 ?>
 
