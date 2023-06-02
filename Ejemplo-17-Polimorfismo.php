@@ -10,30 +10,37 @@ ini_set('display_startup_errors', 1);
 
 <?php
 // Trait es como una interfax pero con los metodos definidos
-trait rasgosVehiculo {
-    public function arrancar () {
+trait rasgosVehiculo
+{
+    public function arrancar()
+    {
         return "Arrancando vehiculo <br>";
     }
-    public function detener () {
+    public function detener()
+    {
         return "Deteniendo vehiculo <br>";
-        }
+    }
 }
 
-trait rasgosCamion {
-    public function cargarCamion () {
+trait rasgosCamion
+{
+    public function cargarCamion()
+    {
         return "Cargando camion <br>";
-}
+    }
 }
 
 // Todos los métodos de una interfaz, son abstractos
 // Definimos una interfaz
-interface metodosCamion {
-    public function acelerar ($valor);
-    public function frenar ($valor);
+interface metodosCamion
+{
+    public function acelerar($valor);
+    public function frenar($valor);
 }
 
-interface metodoEspecial {
-    public function cambiarRemolque ();
+interface metodoEspecial
+{
+    public function cambiarRemolque();
 }
 
 ?>
@@ -74,12 +81,14 @@ class Camion extends Vehiculo implements metodosCamion
     }
 
     // Set y Get
-    public function setRemolque($valor) {
+    public function setRemolque($valor)
+    {
         $this->remolque = $valor;
     }
-    public function getRemolque() {
+    public function getRemolque()
+    {
         return $this->remolque;
-        }
+    }
 
     // Metodos adicionales
     final public function acelerar($valor)
@@ -90,7 +99,7 @@ class Camion extends Vehiculo implements metodosCamion
     {
         $this->velocidad -= $valor;
     }
-    
+
     // Método toString (pinta el objeto)
     // Uso parte del metodo heredado del padre
     public function __toString()
@@ -108,16 +117,17 @@ class Camion extends Vehiculo implements metodosCamion
     }
 }
 
-class Coche extends Vehiculo implements metodoEspecial {
+class Coche extends Vehiculo implements metodoEspecial
+{
     // Atributos
     public $numPuertas = 0;
 
     // Constructor
-    public function __construct($marca, $modelo, $velocidad, $numPuertas) {
+    public function __construct($marca, $modelo, $velocidad, $numPuertas)
+    {
         parent::__construct($marca, $modelo);
         $this->velocidad = $velocidad;
         $this->numPuertas = $numPuertas;
-
     }
 
     // Método toString (pinta el objeto)
@@ -125,16 +135,16 @@ class Coche extends Vehiculo implements metodoEspecial {
     {
         $mensaje = "Datos Coche: <br>";
         $mensaje .= "Marca: " . $this->marca . "<br>"
-        .  "Modelo: " . $this->modelo . "<br>" .
-        "Velocidad: " . $this->velocidad . "<br>" .
-        "Num. Puertas: " . $this->numPuertas . "<br>";
+            .  "Modelo: " . $this->modelo . "<br>" .
+            "Velocidad: " . $this->velocidad . "<br>" .
+            "Num. Puertas: " . $this->numPuertas . "<br>";
         return $mensaje;
-        }
+    }
 
-        final public function cambiarRemolque()
-        {
-            return "Le pongo remolque al coche";
-        }
+    final public function cambiarRemolque()
+    {
+        return "Le pongo remolque al coche";
+    }
 }
 
 ?>

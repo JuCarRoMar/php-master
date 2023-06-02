@@ -219,7 +219,7 @@ class Coche extends Vehiculo implements metodoEspecial
                     echo $miCoche;
                     echo $miCoche->cambiarRemolque();
 
-                    echo Coche::crearCocheBase();       
+                    echo Coche::crearCocheBase();
                 }
                 ?>
             </p>

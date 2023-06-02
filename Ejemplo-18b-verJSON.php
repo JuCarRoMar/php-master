@@ -77,4 +77,3 @@ switch ($api) {
         echo APIS::verJSON(APIS::starTrek());
         break;
 }
-?>

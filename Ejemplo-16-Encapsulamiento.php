@@ -9,27 +9,33 @@ ini_set('display_startup_errors', 1);
 
 <?php
 // Trait es como una interfax pero con los metodos definidos
-trait rasgosVehiculo {
-    public function arrancar () {
+trait rasgosVehiculo
+{
+    public function arrancar()
+    {
         return "Arrancando vehiculo <br>";
     }
-    public function detener () {
+    public function detener()
+    {
         return "Deteniendo vehiculo <br>";
-        }
+    }
 }
 
-trait rasgosCamion {
-    public function cargarCamion () {
+trait rasgosCamion
+{
+    public function cargarCamion()
+    {
         return "Cargando camion <br>";
-}
+    }
 }
 
 
 // Todos los métodos de una interfaz, son abstractos
 // Definimos una interfaz
-interface metodosCamion {
-    public function acelerar ($valor);
-    public function frenar ($valor);
+interface metodosCamion
+{
+    public function acelerar($valor);
+    public function frenar($valor);
 }
 
 ?>
@@ -70,12 +76,14 @@ class Camion extends Vehiculo implements metodosCamion
     }
 
     // Set y Get
-    public function setRemolque($valor) {
+    public function setRemolque($valor)
+    {
         $this->remolque = $valor;
     }
-    public function getRemolque() {
+    public function getRemolque()
+    {
         return $this->remolque;
-        }
+    }
 
     // Metodos adicionales
     final public function acelerar($valor)
@@ -86,7 +94,7 @@ class Camion extends Vehiculo implements metodosCamion
     {
         $this->velocidad -= $valor;
     }
-    
+
     // Método toString (pinta el objeto)
     // Uso parte del metodo heredado del padre
     public function __toString()
