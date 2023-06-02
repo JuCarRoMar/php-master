@@ -43,7 +43,7 @@ trait Gestion2
 {
     public function asignarChofer(): string
     {
-        return "Vehículo con chofer asignado";
+        return "Vehículo con chofer asignado <br>";
     }
 }
 
@@ -76,7 +76,7 @@ class Linea
 // Zona de funciones y clases
 
 // Clase padre
-class Vehiculo
+abstract class Vehiculo
 {
     // Variables
     private $matricula = "1111";
@@ -103,7 +103,45 @@ class Vehiculo
     }
 
     // toString
-    public function __toString(): string
+    abstract public function __toString(): string;
+}
+
+// Clase hija
+class Bus extends Vehiculo implements Metodos1, Metodos2
+{
+    // Atributos
+    public $modelo = "";
+    public $capacidad = 55;
+    public $linea = null;
+
+    // Traits
+    use Gestion1;
+    use Gestion2;
+
+    // Constructor
+    public function __construct($modelo)
+    {
+        parent::__construct("", 2020, false);
+        parent::setMatricula("1111AAA");
+        $this->modelo = $modelo;
+        $this->linea = new Linea("Pol.Norte -> Virgen del Rocío");
+    }
+
+    // darAlta
+    static public function darAlta(): object
+    {
+        $bus = new Bus("Scania GNC");
+        return $bus;
+    }
+
+    // darBaja
+    public function darBaja(): string
+    {
+        return "Bus dado de baja";
+    }
+
+    // toString
+    public function __toString()
     {
         $valorElectrico = "";
         if ($this->electrico) {
@@ -113,30 +151,79 @@ class Vehiculo
         }
 
         $mensaje =
-            "Matrícula: $this->matricula <br>"
+            "Datos bus <br>"
+            . "Matrícula: " . parent::getMatricula() . "<br>"
             . "Antigüedad: $this->antiguedad <br>"
-            . "$valorElectrico <br>";
+            . "$valorElectrico <br>"
+            . "Modelo: $this->modelo <br>"
+            . "Línea: <br>############ <br>"
+            . "$this->linea"
+            . "Capacidad: $this->capacidad <br>";
         return $mensaje;
     }
 }
 
 // Clase hija
-class Bus extends Vehiculo
+class cocheTaller extends Vehiculo implements Metodos1
 {
     // Atributos
-    public $modelo = "";
-    public $capacidad = 55;
+    public $marca = "";
+    public $completo = false;
+    public $linea = null;
+
+    // Traits
+    use Gestion1;
 
     // Constructor
-    public function __construct($modelo) {
-        $this->modelo = $modelo;
+    public function __construct($marca)
+    {
+        parent::__construct("", 2020, false);
+        parent::setMatricula("1111AAA");
+        $this->marca = $marca;
+        $this->linea = new Linea("Pol.Norte -> Virgen del Rocío");
+    }
+
+    // darAlta
+    static public function darAlta(): object
+    {
+        $cocheTaller = new cocheTaller("Ford Super Duty");
+        return $cocheTaller;
+    }
+
+    // darBaja
+    public function darBaja(): string
+    {
+        return "Vehículo taller dado de baja";
     }
 
     // toString
     public function __toString()
     {
-        
-    } 
+        $valorElectrico = "";
+        if ($this->electrico) {
+            $valorElectrico = "Eléctrico: SI";
+        } else {
+            $valorElectrico = "Eléctrico: NO";
+        }
+
+        $valorCompleto = "";
+        if ($this->completo) {
+            $valorCompleto = "Completo: SI";
+        } else {
+            $valorCompleto = "Completo: NO";
+        }
+
+        $mensaje =
+            "<br> Datos Coche Taller <br>"
+            . "Matrícula: " . parent::getMatricula() . "<br>"
+            . "Antigüedad: $this->antiguedad <br>"
+            . "$valorElectrico <br>"
+            . "Marca: $this->marca <br>"
+            . "Línea: <br>############ <br>"
+            . "$this->linea"
+            . "$valorCompleto <br>";
+        return $mensaje;
+    }
 }
 ?>
 
@@ -187,8 +274,23 @@ class Bus extends Vehiculo
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
                     //echo $nombre;
+
+                    # Probamos vehiculo
                     //$v1 = new Vehiculo("11A", 2020, true);
                     //echo $v1;
+
+                    # Probamos linea
+                    //$l2 = new Linea("Puerta-Triana -> Heliopolis");
+                    //echo $l2;
+
+                    // Pintamos Bus1
+                    $bus1 = new Bus("IVECO E-WAY");
+                    echo $bus1;
+                    echo $bus1->asignarChofer();
+
+                    // Pintamos Coche Taller 1
+                    $cocheTaller1 = new cocheTaller("Toyota Hilux");
+                    echo $cocheTaller1;
                 }
                 ?>
             </p>
@@ -205,14 +307,11 @@ class Bus extends Vehiculo
             </form>
         </section>
         <hr>
-
         <nav>
             <p><a href="#" class="btn btn-success">Ir a página</a></p>
 
         </nav>
-
     </main>
-
 </body>
 
 </html>
