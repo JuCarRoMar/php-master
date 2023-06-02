@@ -22,6 +22,7 @@ ini_set('display_startup_errors', 1);
             margin-top: 10px;
             margin-left: 10px;
         }
+
         h1 {
             color: white;
         }
@@ -34,8 +35,6 @@ ini_set('display_startup_errors', 1);
     /* Lógica de la página */
     if (isset($_REQUEST['enviar'])) {
         $nombre = $_POST['nombre'];
-
-
     }
     ?>
 

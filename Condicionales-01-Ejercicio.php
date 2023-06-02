@@ -31,7 +31,8 @@ ini_set('display_startup_errors', 1);
 </head>
 
 <?php
-function verNum($num): string{
+function verNum($num): string
+{
     $mensaje = "";
     if ($num > 0) {
         $mensaje = "El número {$num} es positivo";
