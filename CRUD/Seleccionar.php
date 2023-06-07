@@ -10,20 +10,21 @@ ini_set('display_startup_errors', 1);
  * Fecha: 2023-06-06
  * Info: 
  * 
- * Ciclo de vida de Discos Luis
+ * Ciclo de vida de Discos Luis:
+ * 0) Instalar BBDD
  * 1) Seleccionar
- *          | -> 2) Insertar
- *          | -> 3) Modificar
- *          | -> 4) Borrar
+ *          | -> 2) Insertar -> Accordion (3 Tablas)
+ *          | -> 3) Modificar -> Accordion (3 Tablas)
+ *          | -> 4) Borrar -> Solo Discos!
  */
 ?>
 
 <?php
 // Crear funciones
-function conectar($host, $usuario, $clave, $bbdd)
+function conectar($servidor, $usuario, $clave, $bbdd)
 {
     // Creamos la conexión
-    $conexion = mysqli_connect($host, $usuario, $clave, $bbdd);
+    $conexion = mysqli_connect($servidor, $usuario, $clave, $bbdd);
     // Si conexión-> TRUE, todo correcto!
     // Si conexión-> FALSE, error!
     if (!$conexion) {
@@ -42,7 +43,7 @@ function desonectar($conexion)
 // Crear la conexión
 $conexion = conectar("localhost", "root", "root", "discosLuis");
 // Definimos la consulta
-$consulta = "SELECT *
+$consulta = "SELECT titulo, nombre, genero, cassette, lanzamiento
              FROM Artistas, Discos, Generos
              WHERE Artistas.idArtista = Discos.idArtista
              AND Discos.idGenero = Generos.idGenero";
@@ -53,7 +54,6 @@ $resultado = mysqli_query($conexion, $consulta);
 // Sacamos la salida de la consulta -> tabla con todos los registros
 // Array bidimensional asociativo
 $tabla = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -125,27 +125,27 @@ $tabla = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
                 </thead>
 
                 <tbody>
-                <?php
-                foreach ($tabla as $fila) {
-                    echo "<tr>";
-                    echo "<td>" . $fila['titulo'] . "</td>";
-                    echo "<td>" . $fila['nombre'] . "</td>";
-                    echo "<td>" . $fila['genero'] . "</td>";
-                    if ($fila['cassette']) {
-                        echo "<td> SI </td>";
-                    } else {
-                        echo "<td> NO </td>";
+                    <?php
+                    foreach ($tabla as $fila) {
+                        echo "<tr>";
+                        echo "<td>" . $fila['titulo'] . "</td>";
+                        echo "<td>" . $fila['nombre'] . "</td>";
+                        echo "<td>" . $fila['genero'] . "</td>";
+                        if ($fila['cassette']) {
+                            echo "<td> SI </td>";
+                        } else {
+                            echo "<td> NO </td>";
+                        }
+                        echo "<td>" . $fila['lanzamiento'] . "</td>";
+                        echo "</tr>";
                     }
-                    echo "<td>" . $fila['lanzamiento'] . "</td>";
-                    echo "</tr>";
-                }
-                ?>
+                    ?>
                 </tbody>
 
                 </thead>
             </table>
         </section>
-                  <!--
+        <!--
         <section class="row">
             <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>

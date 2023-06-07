@@ -5,19 +5,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 /**
- * Nombre: 
+ * Nombre: Instalar.php
  * Autor: Juan Carlos Romero Martos
- * Fecha: 
- * Info: 
+ * Fecha: 2023-06-07
+ * Info: Página para instalar BBDD desde archivo SQL
  */
 ?>
 
 <?php
 // Crear funciones
-function conectar($servidor, $usuario, $clave, $bbdd)
+function conectar($servidor, $usuario, $clave)
 {
     // Creamos la conexión
-    $conexion = mysqli_connect($servidor, $usuario, $clave, $bbdd);
+    $conexion = mysqli_connect($servidor, $usuario, $clave);
     // Si conexión-> TRUE, todo correcto!
     // Si conexión-> FALSE, error!
     if (!$conexion) {
@@ -34,7 +34,7 @@ function desonectar($conexion)
 }
 
 // Probamos la conexión
-$conexion = conectar("localhost", "root", "root", "discoLuis");
+$conexion = conectar("localhost", "root", "root");
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +70,9 @@ $conexion = conectar("localhost", "root", "root", "discoLuis");
     /* Lógica de la página */
     // Llamar funciones
     if (isset($_REQUEST['enviar'])) {
-        $nombre = $_POST['nombre'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
+        $archivo = $_REQUEST['archivo'];
+        $sql = file_get_contents($archivo);
+        $resultado = mysqli_multi_query($conexion, $sql);
     }
     ?>
 
@@ -83,7 +85,7 @@ $conexion = conectar("localhost", "root", "root", "discoLuis");
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    echo $nombre;
+                    echo $archivo;
                 }
                 ?>
             </p>
@@ -93,16 +95,16 @@ $conexion = conectar("localhost", "root", "root", "discoLuis");
             <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>
             <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" class="form-control">
+                <label for="archivo" class="form-label">Archivo</label>
+                <input type="file" class="form-control" id="archivo" name="archivo" class="form-control">
                 <hr>
-                <input type="submit" value="enviar" name="enviar" class="btn btn-primary">
+                <input type="submit" value="Instalar BBDD" name="enviar" class="btn btn-primary">
             </form>
         </section>
         <hr>
 
         <nav>
-            <p><a href="#" class="btn btn-success">Ir a página</a></p>
+            <p><a href="Seleccionar.php" class="btn btn-success">Ir a Seleccionar</a></p>
 
         </nav>
 
