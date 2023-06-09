@@ -81,9 +81,9 @@ ini_set('display_startup_errors', 1);
         -->
         <nav>
             <p><a href="Ex1306-media-gdiv.php" class="btn btn-success">Ir a MediaGDivisores</a></p>
-            <p><a href="Ex1306-camion.php" class="btn btn-success">Ir a Camión</a></p>
-            <p><a href="Ex1306-mis-primos.php" class="btn btn-success">Ir a MisPrimos</a></p>
-            <p><a href="Ex1306-tussam.php" class="btn btn-success">Ir a Tussam</a></p>
+            <p><a href="Ex1306-Camion.php" class="btn btn-success">Ir a Camión</a></p>
+            <p><a href="Ex1306-mis-primos.php.php" class="btn btn-success">Ir a MisPrimos</a></p>
+            <p><a href="Ex1306-Tussam.php" class="btn btn-success">Ir a Tussam</a></p>
 
         </nav>
 
