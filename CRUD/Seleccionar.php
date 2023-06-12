@@ -177,7 +177,7 @@ $tabla = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
         <hr>
                 -->
         <nav>
-            <p><a href="insertar.php" class="btn btn-success mt-4">Insertar Datos</a></p>
+            <p><a href="Insertar.php" class="btn btn-success mt-4">Insertar Datos</a></p>
             <p><a href="modificar.php" class="btn btn-info mt-4">Modificar Datos</a></p>
             <p><a href="borrar.php" class="btn btn-danger mt-4">Borrar Datos</a></p>
         </nav>

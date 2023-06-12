@@ -43,6 +43,7 @@ function desconectar($conexion)
 
 // Crear conexión
 $conexion = conectar("localhost", "root", "root", "discosLuis");
+
 // Definimos la consulta
 $sql = "   SELECT * 
                 FROM Artistas, Discos, Generos
@@ -66,7 +67,6 @@ $sql = " SELECT * FROM Generos";
 $resultado = mysqli_query($conexion, $sql);
 $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -99,33 +99,75 @@ $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
 
 <body class="bg-dark">
 
-
     <?php
     /* Logica de la página o Hilo Principal*/
-    /*
-    if (isset($_REQUEST['enviar'])) {
+    if (isset($_REQUEST['enviarArtista'])) {
         $nombre = $_REQUEST['nombre'];
+        $pais = $_REQUEST['pais'];
+
+        $sql = "INSERT INTO Artistas (nombre, pais)
+                VALUES (?, ?)";
+        $sentenciaPreparada = mysqli_prepare($conexion, $sql);
+        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "ss", $nombre, $pais);
+        $ejecucionArtista = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
-    */
+
+    if (isset($_REQUEST['enviarGenero'])) {
+        $genero = $_REQUEST['genero'];
+
+        $sql = "INSERT INTO Generos (genero)
+        VALUES (?)";
+        $sentenciaPreparada = mysqli_prepare($conexion, $sql);
+        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "s", $genero);
+        $ejecucionGenero = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+    }
+
+    if (isset($_REQUEST['enviarDisco'])) {
+        $titulo = $_REQUEST['titulo'];
+        $idArtista = $_REQUEST['idArtista'];
+        $idGenero = $_REQUEST['idGenero'];
+        $cassette = $_REQUEST['cassette'];
+        $lanzamiento = $_REQUEST['lanzamiento'];
+
+        $sql = "INSERT INTO Discos (titulo, idArtista, idGenero, cassette, lanzamiento)
+        VALUES (?, ?, ?, ?, ?)";
+        $sentenciaPreparada = mysqli_prepare($conexion, $sql);
+        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "siiis", $titulo, $idArtista, $idGenero, $cassette, $lanzamiento);
+        $ejecucionDiscos = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+    }
     ?>
 
     <!-- plantilla.php con BootStrap 5.3-->
     <h1 class="bg-light rounded-pill">Discos Luis Javier</h1>
-
     <main class="container">
         <section class="row">
             <h2 class="col-6 bg-info rounded-pill text-white">Alerta</h2>
             <p class="col-9 alert alert-info">
                 <?php
-                /*
-                if (isset($_REQUEST['enviar'])) {
-                    echo $nombre;
-                }
-                */
-                //var_dump($tabla);
 
-                # Ver num registros
-                echo "Número de discos: " . $numDiscos;
+                if (isset($ejecucionArtista) && $ejecucionArtista) {
+                    echo "Num Filas Insertadas: $numFilasInsert <br>";
+                    echo "Alta correcta Artista: $nombre <br>";
+                }
+
+                if (isset($ejecucionGenero) && $ejecucionGenero) {
+                    echo "Num Filas Insertadas: $numFilasInsert <br>";
+                    echo "Género nuevo: $genero <br>";
+                }
+
+                if (isset($ejecucionDiscos) && $ejecucionDiscos) {
+                    echo "Num Filas Insertadas: $numFilasInsert <br>";
+                    echo "Título del disco: $titulo <br>";
+                    echo "Artista: $idArtista <br>";
+                    echo "Género: $idGenero <br>";
+                    echo "Cassette: $cassette <br>";
+                    echo "Lanzamiento: $lanzamiento <br>";
+                    echo "Número de discos: " . $numDiscos;
+                }
+
                 ?>
             </p>
         </section>
@@ -158,13 +200,12 @@ $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
                             echo "<td>NO </td>";
                         }
                         echo "<td>" . $fila['lanzamiento'] . "</td>";
-                        echo "<td class='text-center text-success'>" ?>
-                        <i class="fa-solid fa-pencil fa-beat fa-md"></i>
-                        <?php "</td>";
-                        echo "<td class='text-center text-danger'>" ?>
-                        <i class="fa-solid fa-trash fa-beat fa-md"></i>
-                    <?php "</td>";
-                        echo "</tr>";
+                        echo "<td class='text-center text-success'>";
+                        echo "<i class='fa-solid fa-pencil fa-beat fa-md'></i></td>";
+                        echo "<td class='text-center'>
+                        <a href= 'borrar.php?id=" . $fila['id'] . "'>";
+                        echo "<i class='fa-solid fa-trash fa-beat fa-md  text-danger'></i>";
+                        echo "</a> </td> </tr>";
                     }
                     ?>
                 </tbody>
@@ -256,9 +297,10 @@ $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
                                 ?>
                             </select>
                             <hr>
+                            <input type="hidden" name="cassette" value="0">
                             <section class="form-check form-switch">
                                 <label for="cassette" class="form-check-label">Cassette</label>
-                                <input type="checkbox" name="cassette" role="switch" id="cassette" class="form-check-input">
+                                <input type="checkbox" value="1" name="cassette" role="switch" id="cassette" class="form-check-input">
                             </section>
                             <hr>
                             <label for="lanzamiento" class="form-label">Lanzamiento</label>
