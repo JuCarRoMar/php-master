@@ -61,6 +61,19 @@ function cargarDiscos($conexion)
     return $tablaDiscos;
 }
 
+// Cargar datos disco concreto (id)
+function cargarDisco($conexion, $id)
+{
+    $sql = "   SELECT * 
+                FROM Artistas, Discos, Generos
+                WHERE Artistas.idArtista = Discos.idArtista
+                AND Discos.idGenero = Generos.idGenero
+                AND id = $id";
+    $resultado = mysqli_query($conexion, $sql);
+    $tablaDisco = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    return $tablaDisco;
+}
+
 function cargarArtistas($conexion)
 {
     // Hago lo mismo con Artistas
@@ -70,6 +83,15 @@ function cargarArtistas($conexion)
     return $tablaArtistas;
 }
 
+// Cargar Artista desde id
+function cargarArtista($conexion, $id)
+{
+    $sql = " SELECT * FROM Artistas WHERE idArtista = $id";
+    $resultado = mysqli_query($conexion, $sql);
+    $tablaArtista = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    return $tablaArtista;
+}
+
 function cargarGeneros($conexion)
 {
     // Hago lo mismo con Generos
@@ -77,6 +99,15 @@ function cargarGeneros($conexion)
     $resultado = mysqli_query($conexion, $sql);
     $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
     return $tablaGeneros;
+}
+
+// Cargar Genero desde id
+function cargarGenero($conexion, $id)
+{
+    $sql = " SELECT * FROM Generos WHERE idGenero = $id";
+    $resultado = mysqli_query($conexion, $sql);
+    $tablaGenero = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    return $tablaGenero;
 }
 
 ?>
@@ -165,13 +196,18 @@ function cargarGeneros($conexion)
     $tablaArtistas = cargarArtistas($conexion);
     $tablaGeneros = cargarGeneros($conexion);
     $numDiscos = count($tablaDiscos);
+
+    // Y ademas cargamos las 3 tablas con sus IDs
+    $tablaDisco = cargarDisco($conexion, $_REQUEST['id']);
+    $tablaArtista = cargarArtista($conexion, $_REQUEST['idArtista']);
+    $tablaGenero = cargarGenero($conexion, $_REQUEST['idGenero']);
     ?>
 
     <!-- plantilla.php con BootStrap 5.3-->
     <h1 class="bg-light rounded-pill">Discos Luis Javier</h1>
     <main class="container">
         <section class="row">
-            <h2 class="col-6 bg-info rounded-pill text-white">Alerta</h2>
+            <h2 class="col-6 bg-info rounded-pill text-white">Modificar Datos</h2>
             <p class="col-9 alert alert-info">
                 <?php
 
@@ -255,15 +291,20 @@ function cargarGeneros($conexion)
                 </h2><br>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control">
-                            <br>
-                            <label for="pais" class="form-label">País Artista</label>
-                            <input type="text" name="pais" id="pais" maxlength="3" class="form-control input-sm">
-                            <hr>
-                            <input type="submit" value="Alta Artista" name="enviarArtista" class="btn btn-primary">
-                        </form>
+                        <?php
+                        foreach ($tablaArtista as $fila) {
+                        ?>
+                            <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" value="<?php echo $fila['nombre']; ?>">
+                                <br>
+                                <label for="pais" class="form-label">País Artista</label>
+                                <input type="text" name="pais" id="pais" maxlength="3" class="form-control input-sm" value="<?php echo $fila['pais']; ?> ">
+                                <hr>
+                                <input type="submit" value="Alta Artista" name="enviarArtista" class="btn btn-primary">
+                            </form>
+                        <?php
+                        } ?>
                     </div>
                 </div>
             </header>
@@ -276,12 +317,17 @@ function cargarGeneros($conexion)
                 </h2><br>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
-                            <label for="genero" class="form-label">Género</label>
-                            <input type="text" name="genero" id="genero" class="form-control">
+                        <?php
+                        foreach ($tablaGenero as $fila) {
+                        ?>
+                            <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
+                                <label for="genero" class="form-label">Género</label>
+                                <input type="text" name="genero" id="genero" class="form-control" value="<?php echo $fila['genero'];?> ">
                             <hr>
-                            <input type="submit" value="Alta Genero" name="enviarGenero" class="btn btn-primary">
-                        </form>
+                            <input type=" submit" value="Alta Genero" name="enviarGenero" class="btn btn-primary">
+                            </form>
+                        <?php
+                        } ?>
                     </div>
                 </div>
             </header><br>

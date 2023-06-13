@@ -24,7 +24,8 @@ CREATE TABLE Discos (
     PRIMARY KEY (id),
     FOREIGN KEY (idArtista) REFERENCES Artistas(idArtista),
     FOREIGN KEY (idGenero) REFERENCES Generos(idGenero),
-    INDEX discos_titulo(titulo)
+    INDEX discos_titulo(titulo),
+    UNIQUE KEY (titulo)
 );
 INSERT INTO Artistas (nombre, pais)
 VALUES ("Mike Oldfield", "GBR"),
