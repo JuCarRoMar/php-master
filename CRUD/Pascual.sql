@@ -44,4 +44,4 @@ INSERT INTO Discos (
 VALUES ("Tubular Bells", 1, 1, 0, "1973-05-25"),
     ("Tubular Bells 2", 1, 1, 0, "1992-08-31"),
     ("Brothers in Arms", 2, 2, 0, "1985-05-13"),
-    ("Deltoya", 3, 2, 0, "1992-06-12");
+    ("Deltoya", 3, 2, 1, "1992-06-12");

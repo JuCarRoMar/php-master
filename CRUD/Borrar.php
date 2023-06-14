@@ -1,8 +1,6 @@
 <?php
 // Gestionar errores
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+require("Funciones.php");
 
 /**
  * Nombre: insertar.php
@@ -19,60 +17,8 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
-// Zona de Funciones y Clases
-function conectar($host, $usuario, $clave, $bbdd)
-{
-    // Creamos la conexión
-    $conexion = mysqli_connect($host, $usuario, $clave, $bbdd);
-    // Si Conexión-> TRUE, todo correcto!
-    // Si Conexión-> FALSE, error!
-    if (!$conexion) {
-        // Mostrar mensaje de error
-        echo "Error mysqli_connect_errno(): mysqli_connect_error() <br />";
-    }
-    return $conexion;
-}
-
-function desconectar($conexion)
-{
-    if ($conexion) {
-        // Cerramos la conexión
-        mysqli_close($conexion);
-    }
-}
-
 // Crear conexión
 $conexion = conectar("localhost", "root", "root", "discosLuis");
-
-// Definimos funciones para cargar tablas
-function cargarDiscos($conexion)
-{
-    $sql = "   SELECT * 
-                FROM Artistas, Discos, Generos
-                WHERE Artistas.idArtista = Discos.idArtista
-                AND Discos.idGenero = Generos.idGenero
-                ";
-    // Ejecutar la consulta
-    $resultado = mysqli_query($conexion, $sql);
-    // Sacamos la salida de la consulta -> tabla con todos los registros
-    // Array Bidimensional ASOCIATIVO
-    $tablaDiscos = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaDiscos;
-}
-
-// Cargar datos disco concreto (id)
-function cargarDisco($conexion, $id)
-{
-    $sql = "   SELECT titulo, nombre, genero
-                FROM Artistas, Discos, Generos
-                WHERE Artistas.idArtista = Discos.idArtista
-                AND Discos.idGenero = Generos.idGenero
-                AND id = $id
-                ";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaDisco = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaDisco;
-}
 
 ?>
 
@@ -110,11 +56,8 @@ function cargarDisco($conexion, $id)
     <?php
     /* Logica de la página o Hilo Principal*/
     if (isset($_REQUEST['borrarDisco'])) {
-        $sql = "DELETE FROM Discos WHERE id =" . $_REQUEST['id'] . "";
-        mysqli_query($conexion, $sql);
+        borrar($conexion, $_REQUEST['id']);
     }
-    $tablaDisco = cargarDisco($conexion, $_REQUEST['id']);
-
     // Cargamos las 3 tablas
     $tablaDisco = cargarDisco($conexion, $_REQUEST['id']);
     $tablaDiscos = cargarDiscos($conexion);
@@ -158,13 +101,14 @@ function cargarDisco($conexion, $id)
             </table>
 
             <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
-            <input type="hidden" name="id" value="<?php echo $_REQUEST['id']; ?>">
+                <input type="hidden" name="id" value="<?php echo $_REQUEST['id']; ?>">
                 <input type="submit" value="Borrar Disco" name="borrarDisco" class="btn btn-danger">
             </form><br>
         </section>
         <hr>
         <nav>
             <p><a href="Insertar.php" class="btn btn-success mt-4">Insertar Datos</a></p>
+            <p><a href="Instalar.php" class="btn btn-warning mt-4">Instalar BBDD</a></p>
         </nav>
     </main>
 

@@ -1,8 +1,6 @@
 <?php
 // Gestionar errores
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+require("Funciones.php");
 
 /**
  * Nombre: insertar.php
@@ -19,96 +17,8 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
-// Zona de Funciones y Clases
-function conectar($host, $usuario, $clave, $bbdd)
-{
-    // Creamos la conexión
-    $conexion = mysqli_connect($host, $usuario, $clave, $bbdd);
-    // Si Conexión-> TRUE, todo correcto!
-    // Si Conexión-> FALSE, error!
-    if (!$conexion) {
-        // Mostrar mensaje de error
-        echo "Error mysqli_connect_errno(): mysqli_connect_error() <br />";
-    }
-    return $conexion;
-}
-
-function desconectar($conexion)
-{
-    if ($conexion) {
-        // Cerramos la conexión
-        mysqli_close($conexion);
-    }
-}
-
 // Crear conexión
 $conexion = conectar("localhost", "root", "root", "discosLuis");
-
-// Definimos funciones para cargar tablas
-function cargarDiscos($conexion)
-{
-    $sql = "   SELECT * 
-                FROM Artistas, Discos, Generos
-                WHERE Artistas.idArtista = Discos.idArtista
-                AND Discos.idGenero = Generos.idGenero
-                ";
-    // Ejecutar la consulta
-    $resultado = mysqli_query($conexion, $sql);
-    $numDiscos = mysqli_num_rows($resultado);
-    // Sacamos la salida de la consulta -> tabla con todos los registros
-    // Array Bidimensional ASOCIATIVO
-    $tablaDiscos = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaDiscos;
-}
-
-// Cargar datos disco concreto (id)
-function cargarDisco($conexion, $id)
-{
-    $sql = "   SELECT * 
-                FROM Artistas, Discos, Generos
-                WHERE Artistas.idArtista = Discos.idArtista
-                AND Discos.idGenero = Generos.idGenero
-                AND id = $id";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaDisco = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaDisco;
-}
-
-function cargarArtistas($conexion)
-{
-    // Hago lo mismo con Artistas
-    $sql = " SELECT * FROM Artistas";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaArtistas = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaArtistas;
-}
-
-// Cargar Artista desde id
-function cargarArtista($conexion, $id)
-{
-    $sql = " SELECT * FROM Artistas WHERE idArtista = $id";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaArtista = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaArtista;
-}
-
-function cargarGeneros($conexion)
-{
-    // Hago lo mismo con Generos
-    $sql = " SELECT * FROM Generos";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaGeneros;
-}
-
-// Cargar Genero desde id
-function cargarGenero($conexion, $id)
-{
-    $sql = " SELECT * FROM Generos WHERE idGenero = $id";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaGenero = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaGenero;
-}
 
 ?>
 
@@ -148,24 +58,43 @@ function cargarGenero($conexion, $id)
     if (isset($_REQUEST['enviarArtista'])) {
         $nombre = $_REQUEST['nombre'];
         $pais = $_REQUEST['pais'];
+        $idArtista = $_REQUEST['idArtista'];
 
-        $sql = "INSERT INTO Artistas (nombre, pais)
-                VALUES (?, ?)";
+        $sql = "UPDATE Artistas 
+                SET
+                nombre = ?,
+                pais = ?
+                WHERE idArtista = ?";
         $sentenciaPreparada = mysqli_prepare($conexion, $sql);
-        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "ss", $nombre, $pais);
+        $sentenciaEncriptada =
+            mysqli_stmt_bind_param(
+                $sentenciaPreparada,
+                "ssi",
+                $nombre,
+                $pais,
+                $idArtista
+            );
         $ejecucionArtista = mysqli_stmt_execute($sentenciaPreparada);
         $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
 
     if (isset($_REQUEST['enviarGenero'])) {
         $genero = $_REQUEST['genero'];
+        $idGenero = $_REQUEST['idGenero'];
 
-        $sql = "INSERT INTO Generos (genero)
-        VALUES (?)";
+        $sql = "UPDATE Generos
+                SET genero = ?
+                WHERE idGenero = ?";
         $sentenciaPreparada = mysqli_prepare($conexion, $sql);
-        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "s", $genero);
+        $sentenciaEncriptada =
+            mysqli_stmt_bind_param(
+                $sentenciaPreparada,
+                "si",
+                $genero,
+                $idGenero
+            );
         $ejecucionGenero = mysqli_stmt_execute($sentenciaPreparada);
-        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+        $numFilasUpdate = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
 
     if (isset($_REQUEST['enviarDisco'])) {
@@ -217,8 +146,8 @@ function cargarGenero($conexion, $id)
                 }
 
                 if (isset($ejecucionGenero) && $ejecucionGenero) {
-                    echo "Num Filas Insertadas: $numFilasInsert <br>";
-                    echo "Género nuevo: $genero <br>";
+                    echo "Num Filas Actualizadas: $numFilasUpdate <br>";
+                    echo "Género Modificado: $genero <br>";
                 }
 
                 if (isset($ejecucionDiscos) && $ejecucionDiscos) {
@@ -301,7 +230,7 @@ function cargarGenero($conexion, $id)
                                 <label for="pais" class="form-label">País Artista</label>
                                 <input type="text" name="pais" id="pais" maxlength="3" class="form-control input-sm" value="<?php echo $fila['pais']; ?> ">
                                 <hr>
-                                <input type="submit" value="Alta Artista" name="enviarArtista" class="btn btn-primary">
+                                <input type="submit" value="Actualizar Artista" name="enviarArtista" class="btn btn-primary">
                             </form>
                         <?php
                         } ?>
@@ -322,9 +251,9 @@ function cargarGenero($conexion, $id)
                         ?>
                             <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
                                 <label for="genero" class="form-label">Género</label>
-                                <input type="text" name="genero" id="genero" class="form-control" value="<?php echo $fila['genero'];?> ">
-                            <hr>
-                            <input type=" submit" value="Alta Genero" name="enviarGenero" class="btn btn-primary">
+                                <input type="text" name="genero" id="genero" class="form-control" value="<?php echo $fila['genero']; ?> ">
+                                <hr>
+                                <input type=" submit" value="Actualizar Genero" name="enviarGenero" class="btn btn-primary">
                             </form>
                         <?php
                         } ?>
@@ -339,55 +268,62 @@ function cargarGenero($conexion, $id)
                 </h2><br>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" name="titulo" id="titulo" class="form-control">
-                            <hr>
-                            <select class="form-select" name="idArtista" id="idArtista">
-                                <option selected disabled>Selecciona Artista</option>
-                                <?php
-                                foreach ($tablaArtistas as $artista) {
-                                    /*
-                                    echo "<option value='".
-                                     $artista['idArtista'] . "'>" .
-                                     $artista['nombre'] . "</option>";
-                                     */
-
-                                    $idArtista = $artista['idArtista'];
-                                    $nombreArtista = $artista['nombre'];
-                                    echo "<option value='$idArtista'>$nombreArtista</option>";
-                                }
-                                ?>
-                            </select>
-                            <hr>
-                            <select class="form-select" name="idGenero" id="idGenero">
-                                <option selected disabled>Selecciona Género</option>
-                                <?php
-                                foreach ($tablaGeneros as $genero) {
-                                    /*
-                                    echo "<option value='".
-                                     $genero['idGenero'] . "'>" .
-                                     $genero['genero'] . "</option>";
-                                     */
-
-                                    $idGenero = $genero['idGenero'];
-                                    $nombre = $genero['genero'];
-                                    echo "<option value='$idGenero'>$nombre</option>";
-                                }
-                                ?>
-                            </select>
-                            <hr>
-                            <input type="hidden" name="cassette" value="0">
-                            <section class="form-check form-switch">
-                                <label for="cassette" class="form-check-label">Cassette</label>
-                                <input type="checkbox" value="1" name="cassette" role="switch" id="cassette" class="form-check-input">
-                            </section>
-                            <hr>
-                            <label for="lanzamiento" class="form-label">Lanzamiento</label>
-                            <input type="date" name="lanzamiento" id="lanzamiento" class="form-control">
-                            <hr>
-                            <input type="submit" value="Alta Disco" name="enviarDisco" class="btn btn-primary">
-                        </form>
+                        <?php
+                        foreach ($tablaDisco as $fila) {
+                        ?>
+                            <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
+                                <label for="titulo" class="form-label">Título</label>
+                                <input type="text" name="titulo" id="titulo" class="form-control" value="<?php echo $fila['titulo']; ?> ">
+                                <hr>
+                                <select class="form-select" name="idArtista" id="idArtista">
+                                    <option selected disabled>Selecciona Artista</option>
+                                    <?php
+                                    foreach ($tablaArtistas as $artista) {
+                                        $idArtista = $artista['idArtista'];
+                                        $nombreArtista = $artista['nombre'];
+                                        if ($idArtista == $_REQUEST['idArtista']) {
+                                            echo "<option value='$idArtista' selected>$nombreArtista</option>";
+                                        } else {
+                                            echo "<option value='$idArtista'>$nombreArtista</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <hr>
+                                <select class="form-select" name="idGenero" id="idGenero">
+                                    <option selected disabled>Selecciona Género</option>
+                                    <?php
+                                    foreach ($tablaGeneros as $genero) {
+                                        $idGenero = $genero['idGenero'];
+                                        $nombre = $genero['genero'];
+                                        if ($idGenero == $_REQUEST['idGenero']) {
+                                            echo "<option value='$idGenero' selected>$nombre</option>";
+                                        } else {
+                                            echo "<option value='$idGenero'>$nombre</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <hr>
+                                <input type="hidden" name="cassette" value="0">
+                                <section class="form-check form-switch">
+                                    <label for="cassette" class="form-check-label">Cassette</label>
+                                    <?php
+                                    if ($fila['cassette'] == 1) {
+                                        echo "<input type='checkbox' value='1' name='cassette' role='switch' id='cassette' class='form-check-input' checked>";
+                                    } else {
+                                        echo "<input type='checkbox' value='1' name='cassette' role='switch' id='cassette' class='form-check-input'>";
+                                    }
+                                    ?>
+                                </section>
+                                <hr>
+                                <label for="lanzamiento" class="form-label">Lanzamiento</label>
+                                <input type="date" name="lanzamiento" id="lanzamiento" class="form-control" value="<?php echo $fila['lanzamiento']; ?>">
+                                <hr>
+                                <input type="submit" value="Actualizar Disco" name="enviarDisco" class="btn btn-primary">
+                            </form>
+                        <?php
+                        } ?>
                     </div>
                 </div>
             </header>
@@ -397,8 +333,7 @@ function cargarGenero($conexion, $id)
 
         <nav>
             <p><a href="Insertar.php" class="btn btn-success mt-4">Insertar Datos</a></p>
-            <p><a href="Modificar.php" class="btn btn-info mt-4">Modificar Datos</a></p>
-            <p><a href="Borrar.php" class="btn btn-danger mt-4">Borrar Datos</a></p>
+            <p><a href="Instalar.php" class="btn btn-warning mt-4">Instalar BBDD</a></p>
         </nav>
     </main>
 

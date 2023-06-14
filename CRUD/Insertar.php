@@ -1,84 +1,18 @@
 <?php
 // Gestionar errores
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+require("Funciones.php");
 
 /**
  * Nombre: insertar.php
  * Autor: Iván Rodríguez
  * Fecha: 2023-06-09-17:50
  * Info: Visualizar Datos Tabla Discos / Insertar en Tablas
- * 
- * Ciclo de Vida de Discos de Luis:
- * 1) Seleccionar 
- *          | -> 2) Insertar
- *          | -> 3) Modificar
- *          | -> 4) Borrar
  */
 ?>
 
 <?php
-// Zona de Funciones y Clases
-function conectar($host, $usuario, $clave, $bbdd)
-{
-    // Creamos la conexión
-    $conexion = mysqli_connect($host, $usuario, $clave, $bbdd);
-    // Si Conexión-> TRUE, todo correcto!
-    // Si Conexión-> FALSE, error!
-    if (!$conexion) {
-        // Mostrar mensaje de error
-        echo "Error mysqli_connect_errno(): mysqli_connect_error() <br />";
-    }
-    return $conexion;
-}
-
-function desconectar($conexion)
-{
-    if ($conexion) {
-        // Cerramos la conexión
-        mysqli_close($conexion);
-    }
-}
-
 // Crear conexión
 $conexion = conectar("localhost", "root", "root", "discosLuis");
-
-// Definimos funciones para cargar tablas
-function cargarDiscos($conexion)
-{
-    $sql = "   SELECT * 
-                FROM Artistas, Discos, Generos
-                WHERE Artistas.idArtista = Discos.idArtista
-                AND Discos.idGenero = Generos.idGenero
-                ";
-    // Ejecutar la consulta
-    $resultado = mysqli_query($conexion, $sql);
-    $numDiscos = mysqli_num_rows($resultado);
-    // Sacamos la salida de la consulta -> tabla con todos los registros
-    // Array Bidimensional ASOCIATIVO
-    $tablaDiscos = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaDiscos;
-}
-
-function cargarArtistas($conexion)
-{
-    // Hago lo mismo con Artistas
-    $sql = " SELECT * FROM Artistas";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaArtistas = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaArtistas;
-}
-
-function cargarGeneros($conexion)
-{
-    // Hago lo mismo con Generos
-    $sql = " SELECT * FROM Generos";
-    $resultado = mysqli_query($conexion, $sql);
-    $tablaGeneros = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tablaGeneros;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -350,9 +284,7 @@ function cargarGeneros($conexion)
         <hr>
 
         <nav>
-            <p><a href="Insertar.php" class="btn btn-success mt-4">Insertar Datos</a></p>
-            <p><a href="Modificar.php" class="btn btn-info mt-4">Modificar Datos</a></p>
-            <p><a href="Borrar.php" class="btn btn-danger mt-4">Borrar Datos</a></p>
+            <p><a href="Instalar.php" class="btn btn-warning mt-4">Instalar BBDD</a></p>
         </nav>
     </main>
 

@@ -1,8 +1,6 @@
 <?php
-// Gestionar errores
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Cargamos el archivo externo funciones.php
+require("Funciones.php");
 
 /**
  * Nombre: Instalar.php
@@ -13,28 +11,8 @@ ini_set('display_startup_errors', 1);
 ?>
 
 <?php
-// Crear funciones
-function conectar($servidor, $usuario, $clave)
-{
-    // Creamos la conexión
-    $conexion = mysqli_connect($servidor, $usuario, $clave);
-    // Si conexión-> TRUE, todo correcto!
-    // Si conexión-> FALSE, error!
-    if (!$conexion) {
-        // Mostrar mensaje de error
-        echo "Error mysqli_connect_errorno(): mysqli_connect_error() . <br>";
-    }
-    return $conexion;
-}
-
-function desonectar($conexion)
-{
-    // Cerramos la conexión
-    mysqli_close($conexion);
-}
-
 // Probamos la conexión
-$conexion = conectar("localhost", "root", "root");
+$conexion = conectarSinBBDD("localhost", "root", "root");
 ?>
 
 <!DOCTYPE html>
@@ -61,31 +39,31 @@ $conexion = conectar("localhost", "root", "root");
     </style>
 
 </head>
-<?php
-// Crear funciones
-?>
 
 <body class="bg-dark">
     <?php
     /* Lógica de la página */
-    // Llamar funciones
+    $mensaje = "";
     if (isset($_REQUEST['enviar'])) {
-        $archivo = $_REQUEST['archivo'];
-        $sql = file_get_contents($archivo);
-        $resultado = mysqli_multi_query($conexion, $sql);
+        $resultado = instalar($conexion, $_REQUEST['archivo']);
+        if ($resultado) {
+            $mensaje = "Instalación Correcta";
+        } else {
+            $mensaje = "Error al instalar la BBDD";
+        }
     }
     ?>
 
     <!-- plantilla.php Con Bootstrap 5.3 -->
-    <h1>Plantilla</h1>
+    <h1 class="bg-info rounded-pill">Plantilla</h1>
     <main class="container">
         <section class="row">
-            <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
+            <h2 class="col-6 bg-warning rounded-pill text-white">Alerta</h2>
             <p class="col-9 alert alert-warning">
                 <?php
                 // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
-                    echo $archivo;
+                    echo $mensaje;
                 }
                 ?>
             </p>
@@ -104,7 +82,7 @@ $conexion = conectar("localhost", "root", "root");
         <hr>
 
         <nav>
-            <p><a href="Seleccionar.php" class="btn btn-success">Ir a Seleccionar</a></p>
+            <p><a href="Insertar.php" class="btn btn-success">Ir a Insertar</a></p>
 
         </nav>
 
@@ -116,5 +94,5 @@ $conexion = conectar("localhost", "root", "root");
 
 <?php
 // Al terminar la página desconectamos
-desonectar($conexion);
+desconectar($conexion);
 ?>
