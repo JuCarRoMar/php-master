@@ -50,14 +50,21 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
     /* Logica de la página o Hilo Principal*/
     if (isset($_REQUEST['enviarArtista'])) {
         $nombre = $_REQUEST['nombre'];
-        $pais = $_REQUEST['pais'];
 
-        $sql = "INSERT INTO Artistas (nombre, pais)
-                VALUES (?, ?)";
+        $sql = "SELECT * FROM Artistas
+                WHERE nombre = ?";
         $sentenciaPreparada = mysqli_prepare($conexion, $sql);
-        $sentenciaEncriptada = mysqli_stmt_bind_param($sentenciaPreparada, "ss", $nombre, $pais);
+        $sentenciaEncriptada =
+            mysqli_stmt_bind_param(
+                $sentenciaPreparada,
+                "s",
+                $nombre
+            );
+            
         $ejecucionArtista = mysqli_stmt_execute($sentenciaPreparada);
-        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+        $resultado =  mysqli_stmt_get_result($sentenciaPreparada);
+        $tablaDiscos = mysqli_stmt_get_result($sentenciaPreparada);
+        $numDiscos = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
 
     if (isset($_REQUEST['enviarGenero'])) {
@@ -95,10 +102,13 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
     }
 
     // Cargamos las 3 tablas
-    $tablaDiscos = cargarDiscos($conexion);
-    $tablaArtistas = cargarArtistas($conexion);
-    $tablaGeneros = cargarGeneros($conexion);
-    $numDiscos = count($tablaDiscos);
+    if (!isset($_REQUEST['enviarArtista'])) {
+        $tablaDiscos = cargarDiscos($conexion);
+        $tablaArtistas = cargarArtistas($conexion);
+        $tablaGeneros = cargarGeneros($conexion);
+        $numDiscos = count($tablaDiscos);
+    }
+
     ?>
 
     <!-- plantilla.php con BootStrap 5.3-->
@@ -195,10 +205,8 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" name="nombre" id="nombre" class="form-control">
                             <br>
-                            <label for="pais" class="form-label">País Artista</label>
-                            <input type="text" name="pais" id="pais" maxlength="3" class="form-control input-sm">
                             <hr>
-                            <input type="submit" value="Alta Artista" name="enviarArtista" class="btn btn-primary">
+                            <input type="submit" value="Buscar por Artista" name="enviarArtista" class="btn btn-primary">
                         </form>
                     </div>
                 </div>

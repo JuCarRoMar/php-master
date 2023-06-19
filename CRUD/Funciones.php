@@ -124,3 +124,9 @@ function cargarGenero($conexion, $id)
     $tablaGenero = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
     return $tablaGenero;
 }
+
+// Funciones de utilidades
+function cambiarFecha ($fecha) {
+    $nuevaFecha = date ("d-m-Y", strtotime($fecha));
+    return $nuevaFecha;
+}

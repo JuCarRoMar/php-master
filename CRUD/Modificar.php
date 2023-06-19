@@ -75,7 +75,7 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                 $idArtista
             );
         $ejecucionArtista = mysqli_stmt_execute($sentenciaPreparada);
-        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+        $numFilasUpdate = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
 
     if (isset($_REQUEST['enviarGenero'])) {
@@ -103,21 +103,28 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
         $idGenero = $_REQUEST['idGenero'];
         $cassette = $_REQUEST['cassette'];
         $lanzamiento = $_REQUEST['lanzamiento'];
+        $id = $_REQUEST['id'];
 
-        $sql = "INSERT INTO Discos (titulo, idArtista, idGenero, cassette, lanzamiento)
-        VALUES (?, ?, ?, ?, ?)";
+        $sql = "UPDATE Discos 
+        SET titulo = ?,
+        idArtista = ?,
+        idGenero = ?,
+        cassette = ?,
+        lanzamiento = ?
+        WHERE id = ?";
         $sentenciaPreparada = mysqli_prepare($conexion, $sql);
         $sentenciaEncriptada = mysqli_stmt_bind_param(
             $sentenciaPreparada,
-            "siiis",
+            "siiisi",
             $titulo,
             $idArtista,
             $idGenero,
             $cassette,
-            $lanzamiento
+            $lanzamiento,
+            $id
         );
-        $ejecucionDiscos = mysqli_stmt_execute($sentenciaPreparada);
-        $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
+        $ejecucionDisco = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilasUpdate = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
 
     // Cargamos las 3 tablas
@@ -141,8 +148,8 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                 <?php
 
                 if (isset($ejecucionArtista) && $ejecucionArtista) {
-                    echo "Num Filas Insertadas: $numFilasInsert <br>";
-                    echo "Alta correcta Artista: $nombre <br>";
+                    echo "Num Filas Actualizadas: $numFilasUpdate <br>";
+                    echo "Artista Modificado: $nombre <br>";
                 }
 
                 if (isset($ejecucionGenero) && $ejecucionGenero) {
@@ -150,8 +157,8 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                     echo "Género Modificado: $genero <br>";
                 }
 
-                if (isset($ejecucionDiscos) && $ejecucionDiscos) {
-                    echo "Num Filas Insertadas: $numFilasInsert <br>";
+                if (isset($ejecucionDisco) && $ejecucionDisco) {
+                    echo "Num Filas Actualizadas: $numFilasUpdate <br>";
                     echo "Título del disco: $titulo <br>";
                     echo "Artista: $idArtista <br>";
                     echo "Género: $idGenero <br>";
@@ -159,7 +166,7 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                     echo "Lanzamiento: $lanzamiento <br>";
                     echo "Número de discos: " . $numDiscos;
                 }
-                echo "Número de discos: " . $numDiscos;
+
                 ?>
             </p>
         </section>
@@ -191,7 +198,9 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                         } else {
                             echo "<td>NO </td>";
                         }
-                        echo "<td>" . $fila['lanzamiento'] . "</td>";
+                        
+                        $nuevaFecha = cambiarFecha($fila['lanzamiento']);
+                        echo "<td> $nuevaFecha </td>";
 
                         // Icono de modificar
                         echo "<td class='text-center'>
@@ -253,7 +262,7 @@ $conexion = conectar("localhost", "root", "root", "discosLuis");
                                 <label for="genero" class="form-label">Género</label>
                                 <input type="text" name="genero" id="genero" class="form-control" value="<?php echo $fila['genero']; ?> ">
                                 <hr>
-                                <input type=" submit" value="Actualizar Genero" name="enviarGenero" class="btn btn-primary">
+                                <input type="submit" value="Actualizar Genero" name="enviarGenero" class="btn btn-primary">
                             </form>
                         <?php
                         } ?>
