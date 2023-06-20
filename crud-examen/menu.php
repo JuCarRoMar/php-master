@@ -79,24 +79,17 @@ $conexion = conectar("localhost", "root", "root", "islantilla");
     <main class="container">
         <section class="row">
             <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
-            <p class="col-9 alert alert-warning">
-                <?php
-                // Mostrar funciones
-                if (isset($_REQUEST['enviar'])) {
-                    echo $nombre;
-                }
-                ?>
-            </p>
+            <nav>
+                <p><a href="menu.php" class="btn btn-info">Menu Principal</a></p>
+                <p><a href="islantilla.php" class="btn btn-info">Instalar BBDD</a></p>
+                <p><a href="reservas.php" class="btn btn-info">Consultar Tabla</a></p>
+
+            </nav>
         </section>
 
         <hr>
 
-        <nav>
-            <p><a href="menu.php" class="btn btn-info">Menu Principal</a></p>
-            <p><a href="islantilla.php" class="btn btn-info">Instalar BBDD</a></p>
-            <p><a href="reservas.php" class="btn btn-info">Consultar Tabla</a></p>
 
-        </nav>
 
     </main>
 

@@ -7,7 +7,7 @@ CREATE TABLE reservas (
     entrada DATE NOT NULL,
     salida DATE NOT NULL,
     hab INT(3) NOT NULL,
-    pagado BOOLEAN NOT NULL,
+    pagado BOOLEAN NOT NULL DEFAULT 0,
     importe FLOAT NOT NULL,
     PRIMARY KEY (id)
 );

@@ -56,6 +56,7 @@ $conexion = conectar("localhost", "root", "root", "islantilla");
     <title>Document</title>
     <link href="bootstrap.min.css" rel="stylesheet">
     <script src="bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         h1,
         h2,
@@ -91,38 +92,50 @@ $conexion = conectar("localhost", "root", "root", "islantilla");
         <section class="row">
             <h2 class="col-4 bg-warning rounded-pill text-white">Reservas</h2>
             <section class="bg-white rounded">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
-                        <th>Habitación</th>
-                        <th>Pagado</th>
-                        <th>Importe</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($tablaReservas as $fila) {
-                        echo "<tr>";
-                        echo "<td>" . $fila['cliente'] . "</td>";
-                        echo "<td>" . $fila['entrada'] . "</td>";
-                        echo "<td>" . $fila['salida'] . "</td>";
-                        echo "<td>" . $fila['hab'] . "</td>";
-                        echo "<td>" . $fila['pagado'] . "</td>";
-                        echo "<td>" . $fila['importe'] . "</td>";
-                        echo "</tr>";
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Habitación</th>
+                            <th>Pagado</th>
+                            <th>Importe</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($tablaReservas as $fila) {
+                            echo "<tr>";
+                            echo "<td>" . $fila['cliente'] . "</td>";
+                            echo "<td>" . $fila['entrada'] . "</td>";
+                            echo "<td>" . $fila['salida'] . "</td>";
+                            echo "<td>" . $fila['hab'] . "</td>";
+                            echo "<td>" . $fila['pagado'] . "</td>";
+                            echo "<td>" . $fila['importe'] . "</td>";
+
+                            // Icono de modificar
+                            echo "<td class='text-center'>
+                                  <a href= 'modificar.php?id=" . $fila['id']. "'>";
+                            echo "<i class='fa-solid fa-pencil fa-beat fa-md text-success'></i></a></td>";
+
+                            // Icono de borrar
+                            echo "<td class='text-center'>
+                                  <a href= 'borrar.php?id=" . $fila['id'] . "'>";
+                            echo "<i class='fa-solid fa-trash fa-beat fa-md  text-danger'></i></a></td>";
+                            echo "</tr>";
                         }
-                    ?>
-                </tbody>
+                        ?>
+                    </tbody>
                 </table>
             </section>
         </section>
         <br>
         <nav>
-        <p><a href="registrar.php" class="btn btn-info">Registrar</a></p>
-        <p><a href="menu.php" class="btn btn-info">Volver al Menu Principal</a></p>
+            <p><a href="registrar.php" class="btn btn-info">Registrar</a></p>
+            <p><a href="menu.php" class="btn btn-info">Volver al Menu Principal</a></p>
 
         </nav>
 

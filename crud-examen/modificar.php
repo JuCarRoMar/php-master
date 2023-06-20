@@ -63,31 +63,6 @@ $conexion = conectar("localhost", "root", "root", "islantilla");
 </head>
 <?php
 // Crear funciones
-if (isset($_REQUEST['registrar'])) {
-    $cliente = $_REQUEST['cliente'];
-    $entrada = $_REQUEST['entrada'];
-    $salida = $_REQUEST['salida'];
-    $habitacion = $_REQUEST['hab'];
-    $pagado = $_REQUEST['pagado'];
-    $importe = $_REQUEST['importe'];
-
-    $sql = "INSERT INTO reservas (cliente, entrada, salida, hab, pagado, importe)
-    VALUES (?, ?, ?, ?, ?, ?)";
-    $sentenciaPreparada = mysqli_prepare($conexion, $sql);
-    $sentenciaEncriptada = mysqli_stmt_bind_param(
-        $sentenciaPreparada,
-        "sssiii",
-        $cliente,
-        $entrada,
-        $salida,
-        $habitacion,
-        $pagado,
-        $importe
-    );
-    $ejecucionReservas = mysqli_stmt_execute($sentenciaPreparada);
-    $numFilasInsert = mysqli_stmt_affected_rows($sentenciaPreparada);
-}
-
 function cargarReservas($conexion)
 {
     $sql = "   SELECT * FROM reservas";
@@ -101,22 +76,52 @@ function cargarReservas($conexion)
 <body class="bg-dark">
     <?php
     /* Lógica de la página */
-    // Llamar funciones
-    if (isset($_REQUEST['enviar'])) {
-        $nombre = $_POST['nombre'];    // Linea 37 y linea 49, no tienen porque llamarse igual que el label
+    if (isset($_REQUEST['registrar'])) {
+        $cliente = $_REQUEST['cliente'];
+        $entrada = $_REQUEST['entrada'];
+        $salida = $_REQUEST['salida'];
+        $habitacion = $_REQUEST['hab'];
+        $pagado = $_REQUEST['pagado'];
+        $importe = $_REQUEST['importe'];
+        $id = $_REQUEST['id'];
+
+        $sql = "UPDATE reservas 
+        SET
+        cliente = ?, 
+        entrada = ?, 
+        salida = ?, 
+        hab = ?, 
+        pagado = ?, 
+        importe = ?
+        WHERE id = ?";
+        $sentenciaPreparada = mysqli_prepare($conexion, $sql);
+        $sentenciaEncriptada = mysqli_stmt_bind_param(
+            $sentenciaPreparada,
+            "sssiiii",
+            $cliente,
+            $entrada,
+            $salida,
+            $habitacion,
+            $pagado,
+            $importe,
+            $id
+        );
+        $ejecucionReservas = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilasUpdate = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
-    $tablaReservas = cargarReservas($conexion);
+
+    $tablaReservas = cargarReservas($conexion);   
     ?>
 
     <!-- plantilla.php Con Bootstrap 5.3 -->
     <h1 class="bg-info rounded-pill">Plantilla</h1>
     <main class="container">
         <section class="row">
-            <h2 class="col-6 bg-info rounded-pill text-white">Alerta</h2>
-            <p class="col-9 alert alert-info">
+            <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
+            <p class="col-9 alert alert-warning">
                 <?php
                 if (isset($ejecucionReservas) && $ejecucionReservas) {
-                    echo "Num Filas Insertadas: $numFilasInsert <br>";
+                    echo "Num Filas Actualizadas: $numFilasUpdate <br>";
                     echo "Nombre del cliente: $cliente <br>";
                     echo "Día de llegada: $entrada <br>";
                     echo "Día de salida: $salida <br>";
@@ -128,7 +133,6 @@ function cargarReservas($conexion)
             </p>
         </section>
         <br><br>
-
 
         <section class="row">
             <h2 class="col-4 bg-warning rounded-pill text-white">Reservas</h2>
@@ -160,44 +164,24 @@ function cargarReservas($conexion)
                     </tbody>
                 </table>
             </section>
-        </section>
-        <br>
-        <section class="row">
-            <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
-            <hr>
-            <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <label for="cliente" class="form-label">Nombre</label>
-                <input type="text" id="cliente" name="cliente" class="form-control"><br>
+            
 
-                <label for="entrada" class="form-label">Entrada</label>
-                <input type="date" id="entrada" name="entrada" class="form-control"><br>
-
-                <label for="salida" class="form-label">Salida</label>
-                <input type="date" id="salida" name="salida" class="form-control"><br>
-
-                <label for="hab" class="form-label">Habitacion</label>
-                <input type="num" id="hab" name="hab" class="form-control"><br>
-
-                <input type="hidden" name="pagado" value="0">
-                <section class="form-check form-switch">
-                    <label for="pagado" class="form-check-label">Pagado</label>
-                    <input type="checkbox" value="1" name="pagado" role="switch" id="pagado" class="form-check-input">
-                </section>
-
-                <label for="importe" class="form-label">Importe</label>
-                <input type="num" id="importe" name="importe" class="form-control">
-
+            <section class="row">
+                <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
                 <hr>
+                <form class="col-9 bg-light p-3 rounded" method="post" action="#">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" class="form-control">
+                    <hr>
+                    <input type="submit" value="enviar" name="enviar" class="btn btn-primary">
+                </form>
+            </section>
+            <hr>
 
-                <input type="submit" value="registrar" name="registrar" class="btn btn-primary">
-            </form>
-        </section>
-        <hr>
+            <nav>
+                <p><a href="#" class="btn btn-success">Ir a página</a></p>
 
-        <nav>
-            <p><a href="menu.php" class="btn btn-info">Volver al Menu Principal</a></p>
-
-        </nav>
+            </nav>
 
     </main>
 

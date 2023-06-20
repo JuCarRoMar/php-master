@@ -93,7 +93,7 @@ function instalar($conexion, $archivo)
     <h1 class="bg-info rounded-pill">Plantilla</h1>
     <main class="container">
         <section class="row">
-            <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
+            <h2 class="col-4 bg-warning rounded-pill text-white">Aviso</h2>
             <p class="col-9 alert alert-warning">
                 <?php
                 // Mostrar funciones
