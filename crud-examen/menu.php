@@ -77,14 +77,16 @@ $conexion = conectar("localhost", "root", "root", "islantilla");
     <!-- plantilla.php Con Bootstrap 5.3 -->
     <h1 class="bg-info rounded-pill">Plantilla</h1>
     <main class="container">
-        <section class="row">
-            <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
-            <nav>
+        <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>
+        <section class="bg-white rounded">
+            <br><nav>
                 <p><a href="menu.php" class="btn btn-info">Menu Principal</a></p>
+                <hr>
                 <p><a href="islantilla.php" class="btn btn-info">Instalar BBDD</a></p>
+                <hr>
                 <p><a href="reservas.php" class="btn btn-info">Consultar Tabla</a></p>
 
-            </nav>
+            </nav><br>
         </section>
 
         <hr>

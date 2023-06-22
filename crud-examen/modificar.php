@@ -179,7 +179,8 @@ function cargarReservas($conexion)
             <hr>
 
             <nav>
-                <p><a href="#" class="btn btn-success">Ir a página</a></p>
+            <p><a href="registrar.php" class="btn btn-info">Registrar</a></p>
+            <p><a href="menu.php" class="btn btn-info">Volver al Menu Principal</a></p>
 
             </nav>
 

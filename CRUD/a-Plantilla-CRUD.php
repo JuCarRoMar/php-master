@@ -75,7 +75,7 @@ $conexion = conectar("localhost", "root", "root", "discoLuis");
     ?>
 
     <!-- plantilla.php Con Bootstrap 5.3 -->
-    <h1>Plantilla</h1>
+    <h1 class="bg-info rounded-pill">Plantilla</h1>
     <main class="container">
         <section class="row">
             <h2 class="col-4 bg-warning rounded-pill text-white">Alerta</h2>

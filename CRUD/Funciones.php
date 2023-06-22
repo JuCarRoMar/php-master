@@ -126,7 +126,8 @@ function cargarGenero($conexion, $id)
 }
 
 // Funciones de utilidades
-function cambiarFecha ($fecha) {
-    $nuevaFecha = date ("d-m-Y", strtotime($fecha));
+function cambiarFecha($fecha)
+{
+    $nuevaFecha = date("d-m-Y", strtotime($fecha));
     return $nuevaFecha;
 }
