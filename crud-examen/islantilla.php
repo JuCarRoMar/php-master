@@ -5,45 +5,48 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 /**
- * Nombre: 
- * Autor: Juan Carlos Romero Martos
- * Fecha: 
- * Info: 
+ * Nombre: plantilla-CRUD.php
+ * Autor: Iván Rodríguez
+ * Fecha: 2023-06-05-17:30
+ * Info: Plantilla genérica para proyectos PHP y BBDD
  */
 ?>
 
 <?php
-// Crear funciones
-function conectar($servidor, $usuario, $clave, $bbdd)
+// Zona de Funciones y Clases
+function conectar($servidor, $usuario, $clave)
 {
     // Creamos la conexión
-    $conexion = mysqli_connect($servidor, $usuario, $clave, $bbdd);
-    // Si conexión-> TRUE, todo correcto!
-    // Si conexión-> FALSE, error!
+    $conexion = mysqli_connect($servidor, $usuario, $clave);
+    // Si Conexión-> TRUE, todo correcto!
+    // Si Conexión-> FALSE, error!
     if (!$conexion) {
         // Mostrar mensaje de error
-        echo "Error mysqli_connect_errorno(): mysqli_connect_error() . <br>";
+        echo "Error mysqli_connect_errno(): mysqli_connect_error() <br />";
     }
     return $conexion;
 }
 
-function desonectar($conexion)
+function desconectar($conexion)
 {
-    // Cerramos la conexión
-    mysqli_close($conexion);
+    if ($conexion) {
+        // Cerramos la conexión
+        mysqli_close($conexion);
+    }
 }
 
-// Probamos la conexión
-$conexion = conectar("localhost", "root", "root", "islantilla");
-
-// Instalar la base de datos
 function instalar($conexion, $archivo)
 {
     $sql = file_get_contents($archivo);
     $resultado = mysqli_multi_query($conexion, $sql);
     return $resultado;
 }
+
+// Probamos la conexión
+$conexion = conectar("localhost", "root", "root");
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -56,67 +59,63 @@ function instalar($conexion, $archivo)
     <link href="bootstrap.min.css" rel="stylesheet">
     <script src="bootstrap.bundle.min.js"></script>
     <style>
+        h1 {
+            padding: 10px;
+        }
+
         h1,
         h2,
         p {
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-
-        h1 {
-            color: white;
+            margin: 10px;
         }
     </style>
-
 </head>
-<?php
-// Crear funciones
-
-?>
 
 <body class="bg-dark">
+
+
     <?php
-    /* Lógica de la página */
-    // Llamar funciones
+    /* Logica de la página o Hilo Principal*/
     $mensaje = "";
     if (isset($_REQUEST['enviar'])) {
-        $resultado = instalar($conexion, 'examen.sql');
-        if ($resultado) {
+        $resultado = instalar($conexion, "examen.sql");
+        if($resultado){
             $mensaje = "Instalación Correcta";
         } else {
-            $mensaje = "Error al instalar la BBDD";
+            $mensaje = "Error al Instalar la BBDD";
         }
     }
     ?>
 
-    <!-- plantilla.php Con Bootstrap 5.3 -->
-    <h1 class="bg-info rounded-pill">Plantilla</h1>
+    <!-- plantilla.php con BootStrap 5.3-->
+    <h1 class="bg-light rounded-pill">Plantilla</h1>
+
     <main class="container">
         <section class="row">
-            <h2 class="col-4 bg-warning rounded-pill text-white">Aviso</h2>
-            <p class="col-9 alert alert-warning">
+            <h2 class="col-6 bg-info rounded-pill text-white">Alerta</h2>
+            <p class="col-9 alert alert-info">
                 <?php
-                // Mostrar funciones
                 if (isset($_REQUEST['enviar'])) {
                     echo $mensaje;
                 }
                 ?>
             </p>
         </section>
+        <br><br>
+
         <section class="row">
-            <h2 class="col-6 bg-info rounded-pill text-white">Instalar BBDD</h2>
+            <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
             <hr>
-            <form class="col-9 bg-light p-3 rounded" method="post" action="#">
-                <input type="submit" id="archivo" name="enviar" class="btn btn-primary">
+            <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
+                <hr>
+                <input type="submit" value="Instalar BBDD" name="enviar" class="btn btn-primary">
             </form>
         </section>
         <hr>
-
         <nav>
-            <p><a href="menu.php" class="btn btn-info">Volver al Menu Principal</a></p>
-
+            <p><a href="menu.php" class="btn btn-success mt-4">Volver al menu</a></p>
+            <p><a href="reservas.php" class="btn btn-success mt-4">Reservas</a></p>
         </nav>
-
     </main>
 
 </body>
@@ -124,6 +123,6 @@ function instalar($conexion, $archivo)
 </html>
 
 <?php
-// Al terminar la página desconectamos
-desonectar($conexion);
+// Al terminar la página, quitamos la conexión
+desconectar($conexion);
 ?>

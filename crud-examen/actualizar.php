@@ -5,10 +5,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 /**
- * Nombre: plantilla-CRUD.php
+ * Nombre: actualizar.php
  * Autor: Iván Rodríguez
- * Fecha: 2023-06-05-17:30
- * Info: Plantilla genérica para proyectos PHP y BBDD
+ * Fecha: 2023-06-28-19:30
+ * Info: Página para actualizar el registro que viene de modificar.php
  */
 ?>
 
@@ -35,18 +35,8 @@ function desconectar($conexion)
     }
 }
 
-function cargarReservas($conexion)
-{
-    $sql = "SELECT * FROM reservas";
-    $resultado = mysqli_query($conexion, $sql);
-    $tabla = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $tabla;
-}
-
 // Probamos la conexión
 $conexion = conectar("localhost", "root", "root", "islantilla");
-$tabla = cargarReservas($conexion);
-
 ?>
 
 
@@ -79,8 +69,34 @@ $tabla = cargarReservas($conexion);
     <?php
     /* Logica de la página o Hilo Principal*/
     if (isset($_REQUEST['enviar'])) {
-        $nombre = $_REQUEST['nombre'];
+        $id = $_REQUEST['id'];
+        $cliente = $_REQUEST['cliente'];
+        $entrada = $_REQUEST['entrada'];
+        $salida = $_REQUEST['salida'];
+        $hab = $_REQUEST['hab'];
+        $pagado = $_REQUEST['pagado'];
+        $importe = $_REQUEST['importe'];
+
+        $sql = "UPDATE reservas 
+                SET cliente = ?, 
+                entrada = ?,
+                salida = ?,
+                hab = ?,
+                pagado = ?,
+                importe = ?
+                WHERE id = ?";
+        $sentenciaPreparada = mysqli_prepare($conexion, $sql);
+        $sentenciaEncriptada =
+            mysqli_stmt_bind_param(
+                $sentenciaPreparada,
+                "sssiidi",
+                $cliente, $entrada, $salida,
+                $hab, $pagado, $importe,$id
+            );
+        $ejecutar = mysqli_stmt_execute($sentenciaPreparada);
+        $numFilas = mysqli_stmt_affected_rows($sentenciaPreparada);
     }
+    
     ?>
 
     <!-- plantilla.php con BootStrap 5.3-->
@@ -92,52 +108,30 @@ $tabla = cargarReservas($conexion);
             <p class="col-9 alert alert-info">
                 <?php
                 if (isset($_REQUEST['enviar'])) {
-                    echo $nombre;
+                    if($ejecutar) {
+                        echo "Actualización correcta <br>";
+                        echo "Filas actualizadas: $numFilas";
+                    }
                 }
                 ?>
             </p>
         </section>
         <br><br>
 
-        <section class="row ">
-            <table class="table text-white">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Cliente</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
-                        <th>Habitación</th>
-                        <th>Pagado</th>
-                        <th>Importe</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($tabla as $fila) {
-                        echo "<tr>";
-                        echo "<td>". $fila['id'] . "</td>";
-                        echo "<td>". $fila['cliente'] . "</td>";
-                        echo "<td>". $fila['entrada'] . "</td>";
-                        echo "<td>". $fila['salida'] . "</td>";
-                        echo "<td>". $fila['hab'] . "</td>";
-                        echo "<td>". $fila['pagado'] . "</td>";
-                        echo "<td>". $fila['importe'] . "</td>";
-                        echo "<td><a href='modificar.php?id=".$fila['id']."'>Modificar</a></td>";
-                        echo "<td><a href='borrar.php?id=".$fila['id']."'>Eliminar</a></td>";
-                        echo "</tr>";
-                    } 
-                    ?>
-                </tbody>
-            </table>
+        <section class="row">
+            <h2 class="col-6 bg-info rounded-pill text-white">Formulario</h2>
+            <hr>
+            <form class="col-9 bg-light p-3 rounded alert alert-info" method="post" action="#">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" name="nombre" id="nombre" class="form-control">
+                <hr>
+                <input type="submit" value="Enviar Formulario" name="enviar" class="btn btn-primary">
+            </form>
         </section>
         <hr>
-
         <nav>
             <p><a href="menu.php" class="btn btn-success mt-4">Ir a Menú</a></p>
-            <p><a href="registrar.php" class="btn btn-success mt-4">Registrar</a></p>      
+            <p><a href="reservas.php" class="btn btn-success mt-4">Ir a Reservas</a></p>
         </nav>
     </main>
 
